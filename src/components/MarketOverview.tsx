@@ -1,7 +1,7 @@
-
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { TrendingUp, TrendingDown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface CryptoData {
   id: string;
@@ -17,7 +17,6 @@ const MarketOverview = () => {
   const [cryptoData, setCryptoData] = useState<CryptoData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   
-  // For demo purposes, we'll use mock data instead of an actual API call
   useEffect(() => {
     const mockData: CryptoData[] = [
       {
