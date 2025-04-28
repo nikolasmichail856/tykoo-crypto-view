@@ -11,18 +11,18 @@ const Features = () => {
     },
     {
       icon: <Coins className="h-10 w-10 text-tykoo-blue" />,
-      title: '150+ Cryptocurrencies',
-      description: 'Trade Bitcoin, Ethereum, and 150+ cryptocurrencies with transparent pricing.'
+      title: 'Major Cryptocurrencies',
+      description: 'Trade Bitcoin, Ethereum, and USDC with transparent pricing and low fees.'
     },
     {
       icon: <CreditCard className="h-10 w-10 text-tykoo-blue" />,
-      title: 'Seamless Transactions',
-      description: 'Easy deposits and withdrawals with multiple payment options for your convenience.'
+      title: 'Easy On/Off Ramps',
+      description: 'Seamlessly convert between major currencies and cryptocurrencies with our simple interface.'
     },
     {
       icon: <BarChart className="h-10 w-10 text-tykoo-blue" />,
-      title: 'Advanced Trading Tools',
-      description: 'Access to real-time data, charts, and analysis tools to make informed trading decisions.'
+      title: 'Clear Market Data',
+      description: 'Access to real-time pricing data to make informed trading decisions for your investments.'
     }
   ];
 
@@ -32,7 +32,7 @@ const Features = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-tykoo-darkBlue mb-4">Why Choose TYKOO</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Experience the difference with our secure, easy-to-use platform designed for both beginners and experienced traders.
+            Experience the simplicity of our secure, easy-to-use platform designed for both beginners and experienced traders.
           </p>
         </div>
         

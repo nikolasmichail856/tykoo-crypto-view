@@ -17,17 +17,17 @@ const GetStarted = () => {
     {
       number: '03',
       title: 'Fund Your Account',
-      description: 'Add funds using bank transfer, credit card, or crypto.'
+      description: 'Add funds using bank transfer or credit card.'
     },
     {
       number: '04',
       title: 'Start Trading',
-      description: 'Buy and sell cryptocurrencies with confidence.'
+      description: 'Buy and sell Bitcoin, Ethereum, and USDC with confidence.'
     },
   ];
 
   const benefits = [
-    'No minimum deposit requirements',
+    'Simple interface for beginners',
     'Secure platform with two-factor authentication',
     'Competitive trading fees',
     '24/7 customer support'
@@ -40,7 +40,7 @@ const GetStarted = () => {
           <div className="lg:w-1/2 mb-12 lg:mb-0 lg:pr-12">
             <h2 className="text-3xl font-bold text-tykoo-darkBlue mb-6">Get Started in Minutes</h2>
             <p className="text-gray-600 mb-8">
-              Join millions of traders who have discovered the benefits of crypto. TYKOO makes it easy to get started with a simple, secure platform.
+              Join thousands of traders who have discovered the benefits of our simple crypto exchange. TYKOO makes it easy to get started with a secure platform.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
