@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, TrendingUp, TrendingDown, Bitcoin, Ethereum } from 'lucide-react';
+import { Search, TrendingUp, TrendingDown, Bitcoin } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -200,7 +200,7 @@ const Markets = () => {
       case 'btc':
         return <Bitcoin className="h-6 w-6 text-amber-500" />;
       case 'eth':
-        return <Ethereum className="h-6 w-6 text-indigo-500" />;
+        return <div className="h-6 w-6 bg-indigo-500 rounded-full flex items-center justify-center text-white font-semibold">E</div>;
       default:
         return <div className="h-6 w-6 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">$</div>;
     }
