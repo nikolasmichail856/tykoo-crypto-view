@@ -57,7 +57,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({
             type="text"
             value={isLoading ? "..." : value}
             onChange={(e) => !readOnly && onChange(e.target.value)}
-            className="text-3xl md:text-4xl font-bold border-0 focus:outline-none focus:ring-0 p-2 bg-transparent flex-grow text-tykoo-darkBlue"
+            className="text-xl md:text-2xl font-bold border-0 focus:outline-none focus:ring-0 p-2 bg-transparent flex-grow text-tykoo-darkBlue"
             placeholder="0"
             readOnly={readOnly || isLoading}
           />
