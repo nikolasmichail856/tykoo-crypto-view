@@ -72,33 +72,29 @@ const CurrencyConverter = () => {
         </div>
       </div>
       
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
-        <div className="text-sm text-gray-600">
-          {lastUpdated ? (
-            <div className="flex items-center gap-2">
-              <span>Rates last updated: {format(lastUpdated, 'MMM d, yyyy HH:mm')}</span>
-              <Button 
-                variant="outline" 
-                size="icon" 
-                onClick={handleRefresh} 
-                className="h-8 w-8 border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue/10"
-                disabled={isLoading}
-              >
-                <RefreshCcw className="h-4 w-4" />
-              </Button>
-            </div>
-          ) : (
-            <span>Loading exchange rates...</span>
-          )}
-        </div>
-        
+      <div className="flex flex-col items-center gap-4 mb-6">
         <Button 
           onClick={convertCurrency} 
-          className="bg-tykoo-blue hover:bg-tykoo-darkBlue text-white px-10 py-6 text-lg rounded-xl shadow-md w-full sm:w-auto transition-colors"
+          className="bg-tykoo-blue hover:bg-tykoo-darkBlue text-white px-10 py-6 text-lg rounded-xl shadow-md transition-colors w-full sm:w-auto"
           disabled={isLoading}
         >
           {isLoading ? "Converting..." : "Trade now"}
         </Button>
+        
+        {lastUpdated && (
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <span>Rates last updated: {format(lastUpdated, 'MMM d, yyyy HH:mm')}</span>
+            <Button 
+              variant="outline" 
+              size="icon" 
+              onClick={handleRefresh} 
+              className="h-8 w-8 border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue/10"
+              disabled={isLoading}
+            >
+              <RefreshCcw className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
