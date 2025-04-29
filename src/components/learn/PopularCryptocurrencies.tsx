@@ -11,7 +11,7 @@ const PopularCryptocurrencies = () => {
           <Card className="p-6 shadow-md hover:shadow-lg transition-shadow">
             <div className="flex items-center mb-4">
               <div className="bg-tykoo-blue/10 rounded-full p-3 mr-4">
-                <Bitcoin className="w-8 h-8 text-yellow-500" />
+                <Bitcoin className="w-8 h-8 text-amber-500" />
               </div>
               <h3 className="font-bold text-xl text-tykoo-darkBlue">Bitcoin (BTC)</h3>
             </div>
@@ -25,7 +25,7 @@ const PopularCryptocurrencies = () => {
           <Card className="p-6 shadow-md hover:shadow-lg transition-shadow">
             <div className="flex items-center mb-4">
               <div className="bg-tykoo-blue/10 rounded-full p-3 mr-4">
-                <Banknote className="w-8 h-8 text-blue-500" />
+                <Bitcoin className="w-8 h-8 text-indigo-500" />
               </div>
               <h3 className="font-bold text-xl text-tykoo-darkBlue">Ethereum (ETH)</h3>
             </div>
@@ -39,7 +39,7 @@ const PopularCryptocurrencies = () => {
           <Card className="p-6 shadow-md hover:shadow-lg transition-shadow">
             <div className="flex items-center mb-4">
               <div className="bg-tykoo-blue/10 rounded-full p-3 mr-4">
-                <DollarSign className="w-8 h-8 text-green-500" />
+                <DollarSign className="w-8 h-8 text-emerald-500" />
               </div>
               <h3 className="font-bold text-xl text-tykoo-darkBlue">USD Coin (USDC)</h3>
             </div>
