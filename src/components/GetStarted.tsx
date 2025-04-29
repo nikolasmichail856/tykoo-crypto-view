@@ -67,12 +67,18 @@ const GetStarted = () => {
             </Button>
           </div>
           
-          <div className="lg:w-1/2">
-            <img 
-              src="https://images.unsplash.com/photo-1638913662380-9799def8ffb1?auto=format&fit=crop&q=80&w=1000" 
-              alt="Trading on TYKOO" 
-              className="w-full h-auto rounded-lg shadow-xl" 
-            />
+          <div className="lg:w-1/2 relative">
+            <div className="relative overflow-hidden rounded-lg shadow-xl">
+              <img 
+                src="https://images.unsplash.com/photo-1638913662380-9799def8ffb1?auto=format&fit=crop&q=80&w=1000" 
+                alt="Trading on TYKOO" 
+                className="w-full h-auto rounded-lg animate-fade-in" 
+              />
+              {/* White gradient overlay that fades from bottom and slightly from sides */}
+              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/30 to-transparent pointer-events-none"></div>
+              <div className="absolute inset-0 bg-gradient-to-l from-white/50 to-transparent pointer-events-none"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-white/50 to-transparent pointer-events-none"></div>
+            </div>
           </div>
         </div>
       </div>
