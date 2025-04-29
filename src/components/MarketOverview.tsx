@@ -4,6 +4,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { useCryptoPrices } from '@/hooks/useCryptoPrices';
+import { formatCurrency, formatLargeNumber } from '@/utils/formatters';
 
 interface CryptoData {
   id: string;
@@ -19,63 +21,35 @@ const MarketOverview = () => {
   const [cryptoData, setCryptoData] = useState<CryptoData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   
-  useEffect(() => {
-    const mockData: CryptoData[] = [
-      {
-        id: 'bitcoin',
-        name: 'Bitcoin',
-        symbol: 'BTC',
-        current_price: 64352.12,
-        price_change_percentage_24h: 2.35,
-        market_cap: 1258000000000,
-        image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
-      },
-      {
-        id: 'ethereum',
-        name: 'Ethereum',
-        symbol: 'ETH',
-        current_price: 3456.78,
-        price_change_percentage_24h: -1.23,
-        market_cap: 415000000000,
-        image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
-      },
-      {
-        id: 'usd-coin',
-        name: 'USD Coin',
-        symbol: 'USDC',
-        current_price: 1.00,
-        price_change_percentage_24h: 0.01,
-        market_cap: 29000000000,
-        image: 'https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png',
-      }
-    ];
-    
-    setTimeout(() => {
-      setCryptoData(mockData);
-      setIsLoading(false);
-    }, 500);
-  }, []);
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(value);
-  };
+  // Use the existing hook to fetch real-time crypto prices
+  const { cryptoData: liveCryptoData, isLoading: liveDataLoading } = useCryptoPrices();
   
-  const formatMarketCap = (value: number) => {
-    if (value >= 1000000000000) {
-      return `$${(value / 1000000000000).toFixed(2)}T`;
+  useEffect(() => {
+    if (liveCryptoData) {
+      // Format the data to match our component's expected format
+      const formattedData = liveCryptoData.map(crypto => ({
+        id: crypto.id,
+        name: crypto.id === 'bitcoin' ? 'Bitcoin' : 
+              crypto.id === 'ethereum' ? 'Ethereum' : 
+              crypto.id === 'usd-coin' ? 'USD Coin' : crypto.id,
+        symbol: crypto.id === 'bitcoin' ? 'BTC' : 
+                crypto.id === 'ethereum' ? 'ETH' : 
+                crypto.id === 'usd-coin' ? 'USDC' : crypto.id.toUpperCase(),
+        current_price: crypto.current_price,
+        price_change_percentage_24h: crypto.price_change_percentage_24h || 0,
+        market_cap: crypto.market_cap || 0,
+        image: `https://assets.coingecko.com/coins/images/${
+          crypto.id === 'bitcoin' ? '1' : 
+          crypto.id === 'ethereum' ? '279' : 
+          crypto.id === 'usd-coin' ? '6319' : '1'
+        }/large/${crypto.id.replace('-coin', '')}.png`,
+      }));
+      
+      setCryptoData(formattedData);
+      setIsLoading(false);
     }
-    if (value >= 1000000000) {
-      return `$${(value / 1000000000).toFixed(2)}B`;
-    }
-    if (value >= 1000000) {
-      return `$${(value / 1000000).toFixed(2)}M`;
-    }
-    return formatCurrency(value);
-  };
-
+  }, [liveCryptoData]);
+  
   return (
     <div className="py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -86,7 +60,7 @@ const MarketOverview = () => {
           </p>
         </div>
         
-        {isLoading ? (
+        {isLoading || liveDataLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(3)].map((_, i) => (
               <Card key={i} className="shadow-md">
@@ -124,7 +98,7 @@ const MarketOverview = () => {
                   <div className="flex justify-between items-end">
                     <div>
                       <p className="text-2xl font-bold">{formatCurrency(crypto.current_price)}</p>
-                      <p className="text-sm text-gray-500">Market Cap: {formatMarketCap(crypto.market_cap)}</p>
+                      <p className="text-sm text-gray-500">Market Cap: {formatLargeNumber(crypto.market_cap)}</p>
                     </div>
                     <div className={`flex items-center ${crypto.price_change_percentage_24h >= 0 ? 'text-tykoo-green' : 'text-tykoo-red'}`}>
                       {crypto.price_change_percentage_24h >= 0 ? (
