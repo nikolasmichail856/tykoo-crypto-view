@@ -22,8 +22,19 @@ export const formatLargeNumber = (value: number) => {
 };
 
 export const formatCryptoAmount = (value: number, currency: string) => {
+  // For very small values in BTC or ETH, show up to 10 decimal places
   if (currency === 'BTC' || currency === 'ETH') {
-    return value.toFixed(8);
+    if (value < 0.0001) {
+      return value.toFixed(10).replace(/\.?0+$/, '');
+    }
+    if (value < 0.01) {
+      return value.toFixed(8);
+    }
+    return value.toFixed(6);
+  }
+  // For other currencies, show up to 6 decimals for small values
+  if (value < 0.01) {
+    return value.toFixed(6).replace(/\.?0+$/, '');
   }
   return value.toFixed(2);
 };
