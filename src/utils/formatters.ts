@@ -20,3 +20,14 @@ export const formatLargeNumber = (value: number) => {
   }
   return formatCurrency(value);
 };
+
+export const formatCryptoAmount = (value: number, currency: string) => {
+  if (currency === 'BTC' || currency === 'ETH') {
+    return value.toFixed(8);
+  }
+  return value.toFixed(2);
+};
+
+export const formatPercentage = (value: number) => {
+  return `${(value * 100).toFixed(2)}%`;
+};
