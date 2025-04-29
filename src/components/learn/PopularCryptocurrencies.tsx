@@ -1,5 +1,6 @@
 
 import { Card } from '@/components/ui/card';
+import { Bitcoin, Banknote, DollarSign } from 'lucide-react';
 
 const PopularCryptocurrencies = () => {
   return (
@@ -10,7 +11,7 @@ const PopularCryptocurrencies = () => {
           <Card className="p-6 shadow-md hover:shadow-lg transition-shadow">
             <div className="flex items-center mb-4">
               <div className="bg-tykoo-blue/10 rounded-full p-3 mr-4">
-                <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="Bitcoin" className="w-8 h-8" />
+                <Bitcoin className="w-8 h-8 text-yellow-500" />
               </div>
               <h3 className="font-bold text-xl text-tykoo-darkBlue">Bitcoin (BTC)</h3>
             </div>
@@ -24,7 +25,7 @@ const PopularCryptocurrencies = () => {
           <Card className="p-6 shadow-md hover:shadow-lg transition-shadow">
             <div className="flex items-center mb-4">
               <div className="bg-tykoo-blue/10 rounded-full p-3 mr-4">
-                <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="Ethereum" className="w-8 h-8" />
+                <Banknote className="w-8 h-8 text-blue-500" />
               </div>
               <h3 className="font-bold text-xl text-tykoo-darkBlue">Ethereum (ETH)</h3>
             </div>
@@ -38,7 +39,7 @@ const PopularCryptocurrencies = () => {
           <Card className="p-6 shadow-md hover:shadow-lg transition-shadow">
             <div className="flex items-center mb-4">
               <div className="bg-tykoo-blue/10 rounded-full p-3 mr-4">
-                <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.svg" alt="USD Coin" className="w-8 h-8" />
+                <DollarSign className="w-8 h-8 text-green-500" />
               </div>
               <h3 className="font-bold text-xl text-tykoo-darkBlue">USD Coin (USDC)</h3>
             </div>
