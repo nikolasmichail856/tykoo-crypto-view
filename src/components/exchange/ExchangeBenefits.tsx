@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Shield, Wallet, TrendingUp, Exchange } from "lucide-react";
+import { Shield, Wallet, TrendingUp, ArrowLeftRight } from "lucide-react";
 
 const ExchangeBenefits = () => {
   const benefits = [
@@ -26,7 +26,7 @@ const ExchangeBenefits = () => {
       id: "trading",
       title: "Instant Exchanges",
       description: "Convert between currencies quickly with our optimized trading engine.",
-      icon: <Exchange className="h-10 w-10 text-tykoo-blue" />,
+      icon: <ArrowLeftRight className="h-10 w-10 text-tykoo-blue" />,
     },
   ];
 

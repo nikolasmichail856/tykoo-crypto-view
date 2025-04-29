@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowRight, Exchange } from "lucide-react";
+import { ArrowRight, ArrowLeftRight } from "lucide-react";
 import { formatCurrency } from "@/utils/formatters";
 
 // Mock exchange rates - in a real application, these would be fetched from an API
@@ -141,7 +141,7 @@ const CurrencyConverter = () => {
               onClick={handleSwapCurrencies}
               className="rounded-full"
             >
-              <Exchange className="h-5 w-5" />
+              <ArrowLeftRight className="h-5 w-5" />
             </Button>
           </div>
 
