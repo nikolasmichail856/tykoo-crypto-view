@@ -86,18 +86,6 @@ const Careers = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[
               {
-                title: "Senior Blockchain Developer",
-                department: "Engineering",
-                location: "Remote / San Francisco",
-                type: "Full-time"
-              },
-              {
-                title: "Product Marketing Manager",
-                department: "Marketing",
-                location: "New York / Remote",
-                type: "Full-time"
-              },
-              {
                 title: "Cybersecurity Specialist",
                 department: "Security",
                 location: "Remote",
