@@ -13,7 +13,6 @@ const Footer = () => {
                 alt="TYKOO Logo" 
                 className="h-8 w-auto mr-2" 
               />
-              <span className="text-xl font-bold">TYKOO</span>
             </Link>
             <p className="text-gray-400 text-sm">
               Tykoo is a trading style of Finvault Exchange spółka z ograniczoną odpowiedzialnością, a company registered in Poland with its registered address at ul. Prezydenta Gabriela Narutowicza 40 / 1, 90-135 Łódź. The company is authorised and regulated under Polish law to operate as a virtual asset service provider (VASP), including the exchange of digital currencies.
@@ -63,4 +62,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
