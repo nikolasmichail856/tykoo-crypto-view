@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Link } from 'react-router-dom';
 
 const About = () => {
   return (
@@ -82,8 +83,8 @@ const About = () => {
           <p className="text-xl max-w-3xl mx-auto mb-8">
             Be part of the financial revolution and help us build a more inclusive, accessible future.
           </p>
-          <Button size="lg" className="bg-white text-tykoo-blue hover:bg-gray-100">
-            Join Our Team
+          <Button size="lg" className="bg-white text-tykoo-blue hover:bg-gray-100" asChild>
+            <Link to="/careers">Join Our Team</Link>
           </Button>
         </div>
       </section>
