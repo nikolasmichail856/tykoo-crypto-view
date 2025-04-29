@@ -39,7 +39,7 @@ const About = () => {
               <img 
                 src="/lovable-uploads/3f59da82-63ec-42e5-8290-b796258d700c.png" 
                 alt="TYKOO Logo" 
-                className="h-auto w-auto max-w-full rounded-lg shadow-lg" 
+                className="w-3/4 h-auto max-w-md shadow-lg" 
               />
             </div>
           </div>
