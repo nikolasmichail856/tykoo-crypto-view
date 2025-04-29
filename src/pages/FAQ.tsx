@@ -11,7 +11,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useState } from 'react';
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, HelpCircle, AlertCircle, PlusCircle } from "lucide-react";
 
 const FAQ = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,6 +19,7 @@ const FAQ = () => {
   const faqCategories = [
     {
       name: "Account",
+      icon: <HelpCircle className="h-6 w-6 text-tykoo-blue" />,
       questions: [
         {
           question: "How do I create a TYKOO account?",
@@ -100,42 +101,61 @@ const FAQ = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
+      
+      {/* Enhanced Hero Section */}
+      <div className="bg-gradient-to-r from-tykoo-darkBlue to-tykoo-blue text-white py-16">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
+            Frequently Asked Questions
+          </h1>
+          <p className="text-xl max-w-2xl mx-auto mb-8 text-gray-100 opacity-90">
+            Find quick answers to common questions about TYKOO's cryptocurrency exchange services.
+          </p>
+          
+          {/* Improved Search Bar */}
+          <div className="relative max-w-md mx-auto bg-white rounded-full shadow-lg overflow-hidden">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-tykoo-blue" />
+            <Input
+              type="text"
+              placeholder="Search for answers..."
+              className="pl-12 pr-4 py-6 border-none focus-visible:ring-tykoo-blue"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+      
       <div className="flex-grow bg-gray-50 py-16">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-tykoo-darkBlue mb-4">Frequently Asked Questions</h1>
-            <p className="text-gray-600 max-w-2xl mx-auto mb-8">
-              Find answers to common questions about TYKOO's cryptocurrency exchange services.
-            </p>
-            <div className="relative max-w-md mx-auto">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input
-                type="text"
-                placeholder="Search for answers..."
-                className="pl-10 pr-4 py-2"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-          </div>
-
           {filteredFAQs.length === 0 ? (
             <div className="text-center py-12">
+              <AlertCircle className="h-16 w-16 text-tykoo-blue mx-auto mb-4 opacity-70" />
               <p className="text-xl text-gray-600">No results found for "{searchTerm}"</p>
               <p className="mt-2 text-gray-500">Try a different search term or browse all categories</p>
             </div>
           ) : (
-            <div className="space-y-10">
+            <div className="space-y-12">
               {filteredFAQs.map((category, index) => (
                 <div key={index} className="space-y-4">
-                  <h2 className="text-2xl font-bold text-tykoo-darkBlue">{category.name}</h2>
-                  <Card className="shadow-sm">
+                  <div className="flex items-center space-x-3 mb-4">
+                    {category.icon || <HelpCircle className="h-6 w-6 text-tykoo-blue" />}
+                    <h2 className="text-2xl font-bold text-tykoo-darkBlue">{category.name}</h2>
+                  </div>
+                  <Card className="shadow-md rounded-xl overflow-hidden border-t-4 border-t-tykoo-blue">
                     <Accordion type="single" collapsible className="w-full">
                       {category.questions.map((faq, faqIndex) => (
-                        <AccordionItem value={`${index}-${faqIndex}`} key={faqIndex}>
-                          <AccordionTrigger className="px-6 py-4 text-left font-medium">{faq.question}</AccordionTrigger>
-                          <AccordionContent className="px-6 pb-4 text-gray-600">
-                            {faq.answer}
+                        <AccordionItem value={`${index}-${faqIndex}`} key={faqIndex} className="border-b border-gray-200 last:border-0">
+                          <AccordionTrigger className="px-6 py-5 text-left font-medium hover:bg-gray-50 hover:no-underline text-tykoo-darkBlue">
+                            <div className="flex items-center">
+                              <PlusCircle className="h-5 w-5 text-tykoo-blue mr-3 flex-shrink-0" />
+                              <span>{faq.question}</span>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent className="px-6 pb-5 pt-2 text-gray-600 bg-gray-50">
+                            <div className="pl-8">
+                              {faq.answer}
+                            </div>
                           </AccordionContent>
                         </AccordionItem>
                       ))}
@@ -146,10 +166,18 @@ const FAQ = () => {
             </div>
           )}
           
-          <div className="mt-16 text-center">
-            <p className="mb-4 text-gray-600">Can't find what you're looking for?</p>
-            <Button className="bg-tykoo-blue text-white hover:bg-tykoo-darkBlue" asChild>
-              <a href="/support">Contact Support</a>
+          {/* Enhanced CTA Section */}
+          <div className="mt-16 text-center bg-white p-8 rounded-xl shadow-md">
+            <h3 className="text-2xl font-bold mb-4 text-tykoo-darkBlue">Can't find what you're looking for?</h3>
+            <p className="mb-6 text-gray-600">Our support team is ready to help you with any questions you might have.</p>
+            <Button 
+              className="bg-tykoo-blue text-white hover:bg-tykoo-darkBlue px-8 py-6 text-lg rounded-full transition-all shadow-lg hover:shadow-xl" 
+              asChild
+            >
+              <a href="/support" className="flex items-center">
+                <HelpCircle className="mr-2" />
+                Contact Support
+              </a>
             </Button>
           </div>
         </div>
