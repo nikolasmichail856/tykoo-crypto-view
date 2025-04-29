@@ -15,7 +15,7 @@ const HeroWithLogo: React.FC<HeroWithLogoProps> = ({ imageSrc, logoSrc, alt }) =
         alt={alt}
         className="w-full h-auto rounded-lg shadow-2xl"
       />
-      <div className="absolute bottom-6 right-6 w-1/4 max-w-[120px] bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-lg">
+      <div className="absolute top-6 left-6 w-1/4 max-w-[120px] bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-lg">
         <img 
           src={logoSrc} 
           alt="TYKOO Logo" 
