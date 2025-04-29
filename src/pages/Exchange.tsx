@@ -18,7 +18,7 @@ const Exchange = () => {
         <div className="bg-tykoo-lightGray py-20">
           <div className="container mx-auto px-4">
             <CurrencyConverter />
-            <div className="text-sm text-gray-600 text-center mt-4">
+            <div className="text-sm text-[#f7f8fa] text-center mt-4">
               Exchange rates from open.er-api.com. Cryptocurrency prices from CoinGecko API in real-time.
             </div>
           </div>
