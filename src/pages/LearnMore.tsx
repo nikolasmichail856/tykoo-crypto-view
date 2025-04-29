@@ -1,4 +1,3 @@
-
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -242,7 +241,7 @@ const LearnMore = () => {
               </div>
               <div className="md:w-1/2">
                 <img 
-                  src="https://images.unsplash.com/photo-1605792657660-596af9009e82" 
+                  src="https://images.unsplash.com/photo-1498050108023-c5249f4df085" 
                   alt="Crypto security concept" 
                   className="rounded-lg shadow-xl w-full h-auto"
                 />
