@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -137,7 +136,7 @@ const Contact = () => {
                       </svg>
                       <div>
                         <p className="font-medium">Phone:</p>
-                        <p className="text-gray-600">+48 123 456 789</p>
+                        <p className="text-gray-600">+44 744 142 7929</p>
                       </div>
                     </div>
                     
