@@ -21,7 +21,7 @@ const Hero = () => {
                 <Link to="/markets">Start Trading</Link>
               </Button>
               <Button variant="outline" className="border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue hover:text-white text-lg px-8 py-6" asChild>
-                <Link to="/faq">
+                <Link to="/learn-more">
                   <span>Learn More</span>
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
