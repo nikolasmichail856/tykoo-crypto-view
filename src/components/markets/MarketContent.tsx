@@ -7,7 +7,6 @@ import CoinChartCard from '@/components/markets/CoinChartCard';
 import CoinStats from '@/components/markets/CoinStats';
 import WhyTradeSection from '@/components/markets/WhyTradeSection';
 import PaginationControls from '@/components/markets/PaginationControls';
-import CryptoIconRenderer from '@/components/markets/CryptoIconRenderer';
 import { type CryptoData } from './MarketDataProvider';
 
 interface MarketContentProps {
@@ -35,10 +34,6 @@ const MarketContent: React.FC<MarketContentProps> = ({
   handleSort,
   handleCryptoSelect
 }) => {
-  const getCryptoIcon = (symbol: string) => {
-    return <CryptoIconRenderer symbol={symbol} />;
-  };
-
   return (
     <>
       <MarketControls 
@@ -79,7 +74,6 @@ const MarketContent: React.FC<MarketContentProps> = ({
         formatLargeNumber={formatLargeNumber}
         handleCryptoSelect={handleCryptoSelect}
         selectedCrypto={selectedCrypto}
-        getCryptoIcon={getCryptoIcon}
       />
       
       <WhyTradeSection />

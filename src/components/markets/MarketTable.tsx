@@ -107,13 +107,11 @@ const MarketTable: React.FC<MarketTableProps> = ({
                 >
                   <TableCell className="font-medium">{index + 1}</TableCell>
                   <TableCell>
-                    <div className="flex items-center">
-                      <div className="mr-2">
-                        <CryptoIconRenderer symbol={crypto.symbol} image={crypto.image} />
-                      </div>
+                    <div className="flex items-center gap-3">
+                      <CryptoIconRenderer symbol={crypto.symbol} image={crypto.image} />
                       <div>
                         <div className="font-medium">{crypto.name}</div>
-                        <div className="text-gray-500 text-xs">{crypto.symbol}</div>
+                        <div className="text-gray-500 text-xs">{crypto.symbol.toUpperCase()}</div>
                       </div>
                     </div>
                   </TableCell>
