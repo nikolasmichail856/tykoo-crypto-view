@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Bitcoin } from 'lucide-react';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import { formatCurrency, formatLargeNumber } from '@/utils/formatters';
+import { formatCurrency, formatLargeNumber, formatDateForPeriod } from '@/utils/formatters';
 import MarketTable from '@/components/markets/MarketTable';
 import MarketControls from '@/components/markets/MarketControls';
 import CoinChartCard from '@/components/markets/CoinChartCard';
@@ -32,6 +32,7 @@ const Markets = () => {
   const [cryptoData, setCryptoData] = useState<CryptoData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedPeriod, setSelectedPeriod] = useState("1"); // Add state for period selection
   const [activeSortField, setActiveSortField] = useState("market_cap");
   const [sortDirection, setSortDirection] = useState("desc");
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoData | null>(null);
@@ -175,13 +176,19 @@ const Markets = () => {
             <>
               <MarketControls 
                 searchTerm={searchTerm} 
-                setSearchTerm={setSearchTerm} 
+                setSearchTerm={setSearchTerm}
+                selectedPeriod={selectedPeriod}
+                setSelectedPeriod={setSelectedPeriod}
               />
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                 <div className="lg:col-span-2">
                   {selectedCrypto && (
-                    <CoinChartCard selectedCrypto={selectedCrypto} formatCurrency={formatCurrency} />
+                    <CoinChartCard 
+                      selectedCrypto={selectedCrypto} 
+                      formatCurrency={formatCurrency}
+                      period={selectedPeriod} // Pass period to CoinChartCard
+                    />
                   )}
                 </div>
                 
