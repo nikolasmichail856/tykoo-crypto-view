@@ -3,7 +3,7 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CurrencyOption } from "@/hooks/useCurrencyConverter";
-import { DollarSign, Euro, Bitcoin } from "lucide-react";
+import { Euro, Bitcoin, DollarSign } from "lucide-react";
 
 interface CurrencyInputProps {
   value: string;
@@ -26,12 +26,14 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({
 }) => {
   const getCurrencyIcon = (currencyCode: string) => {
     switch(currencyCode) {
-      case "USD":
-        return <DollarSign className="h-5 w-5 text-blue-500" />;
       case "EUR":
         return <Euro className="h-5 w-5 text-blue-500" />;
       case "BTC":
         return <Bitcoin className="h-5 w-5 text-orange-500" />;
+      case "ETH":
+        return <DollarSign className="h-5 w-5 text-purple-500" />;
+      case "USDC":
+        return <DollarSign className="h-5 w-5 text-green-500" />;
       default:
         return <DollarSign className="h-5 w-5 text-blue-500" />;
     }

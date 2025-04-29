@@ -29,9 +29,7 @@ export const useCurrencyConverter = () => {
   ];
 
   const fiatOptions: CurrencyOption[] = [
-    { value: "USD", label: "USD" },
     { value: "EUR", label: "EUR" },
-    { value: "GBP", label: "GBP" },
   ];
 
   // Filter options based on current selection
