@@ -9,31 +9,18 @@ import {
 } from "@/components/ui/card";
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import PriceChart from '@/components/PriceChart';
-
-interface CryptoData {
-  id: string;
-  name: string;
-  symbol: string;
-  current_price: number;
-  price_change_percentage_24h: number;
-  market_cap: number;
-  total_volume: number;
-  image: string;
-  description: string;
-  high_24h: number;
-  low_24h: number;
-  circulating_supply: number;
-  price_history: { timestamp: string; price: number }[];
-}
+import { type CryptoData } from './MarketDataProvider';
 
 interface CoinChartCardProps {
   selectedCrypto: CryptoData;
   formatCurrency: (value: number) => string;
+  period: string;
 }
 
 const CoinChartCard: React.FC<CoinChartCardProps> = ({
   selectedCrypto,
-  formatCurrency
+  formatCurrency,
+  period
 }) => {
   return (
     <Card className="shadow-sm">
@@ -60,7 +47,7 @@ const CoinChartCard: React.FC<CoinChartCardProps> = ({
         </div>
       </CardHeader>
       <CardContent>
-        <PriceChart data={selectedCrypto.price_history} name={selectedCrypto.name} symbol={selectedCrypto.symbol} />
+        <PriceChart data={selectedCrypto.price_history} name={selectedCrypto.name} symbol={selectedCrypto.symbol} period={period} />
       </CardContent>
     </Card>
   );
