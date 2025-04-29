@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChartContainer } from "@/components/ui/chart";
 import { 
   ResponsiveContainer, 
@@ -12,6 +12,7 @@ import {
   TooltipProps
 } from 'recharts';
 import { Card } from '@/components/ui/card';
+import { RefreshCw } from 'lucide-react';
 
 interface PriceData {
   timestamp: string;
@@ -45,7 +46,11 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>)
   return null;
 };
 
-const PriceChart: React.FC<PriceChartProps> = ({ data, name, symbol }) => {
+const PriceChart: React.FC<PriceChartProps> = ({ data: initialData, name, symbol }) => {
+  const [data, setData] = useState<PriceData[]>(initialData);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  
   const getColor = () => {
     switch(symbol.toLowerCase()) {
       case 'btc': return '#f7931a';
@@ -57,8 +62,50 @@ const PriceChart: React.FC<PriceChartProps> = ({ data, name, symbol }) => {
 
   const chartColor = getColor();
   
+  useEffect(() => {
+    // Update the chart data every 10 seconds to simulate real-time updates
+    const interval = setInterval(() => {
+      setIsUpdating(true);
+      
+      // Get the latest price point
+      const lastPrice = data[data.length - 1].price;
+      
+      // Create a small random price movement (between -2% and +2%)
+      const priceChange = lastPrice * (Math.random() * 0.04 - 0.02);
+      const newPrice = lastPrice + priceChange;
+      
+      // Create a new timestamp
+      const now = new Date();
+      
+      // Add new data point and remove the oldest if more than 30 points
+      const newData = [...data, {
+        timestamp: now.toISOString(),
+        price: newPrice
+      }];
+      
+      if (newData.length > 30) {
+        newData.shift();
+      }
+      
+      setData(newData);
+      setLastUpdated(now);
+      setIsUpdating(false);
+    }, 10000);
+    
+    return () => clearInterval(interval);
+  }, [data]);
+  
   return (
     <div className="w-full h-[300px]">
+      <div className="flex justify-between items-center mb-2">
+        <div></div>
+        <div className="flex items-center text-xs text-gray-500">
+          <RefreshCw className={`h-3 w-3 mr-1 ${isUpdating ? 'animate-spin' : ''}`} />
+          <span>
+            Last updated: {lastUpdated.toLocaleTimeString()}
+          </span>
+        </div>
+      </div>
       <ChartContainer
         config={{
           price: {
@@ -83,7 +130,7 @@ const PriceChart: React.FC<PriceChartProps> = ({ data, name, symbol }) => {
               tick={{ fontSize: 12 }}
               tickFormatter={(value) => {
                 const date = new Date(value);
-                return `${date.getDate()}/${date.getMonth() + 1}`;
+                return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
               }}
               stroke="#94a3b8"
             />
