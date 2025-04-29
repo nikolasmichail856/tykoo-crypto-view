@@ -25,7 +25,8 @@ const CoinChartCard: React.FC<CoinChartCardProps> = ({
   console.log('CoinChartCard rendering with:', { 
     cryptoName: selectedCrypto.name, 
     priceHistoryLength: selectedCrypto.price_history?.length,
-    period 
+    period,
+    price: selectedCrypto.current_price
   });
 
   return (
@@ -53,19 +54,13 @@ const CoinChartCard: React.FC<CoinChartCardProps> = ({
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        <div className="mt-4 mb-8 h-[400px]">
-          {selectedCrypto.price_history && selectedCrypto.price_history.length > 0 ? (
-            <PriceChart 
-              data={selectedCrypto.price_history} 
-              name={selectedCrypto.name} 
-              symbol={selectedCrypto.symbol} 
-              period={period} 
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gray-50 rounded-md">
-              <p className="text-gray-500">No price history available</p>
-            </div>
-          )}
+        <div className="mt-4 h-[500px]">
+          <PriceChart 
+            data={selectedCrypto.price_history || []} 
+            name={selectedCrypto.name} 
+            symbol={selectedCrypto.symbol} 
+            period={period} 
+          />
         </div>
       </CardContent>
     </Card>

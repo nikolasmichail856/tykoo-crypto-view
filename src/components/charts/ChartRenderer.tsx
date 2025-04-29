@@ -60,7 +60,12 @@ const ChartRenderer: React.FC<ChartRendererProps> = ({
     );
   }
 
-  console.log('Rendering chart with data:', { dataLength: data.length, firstPoint: data[0], chartColor });
+  console.log('Rendering chart with data:', { 
+    dataLength: data.length, 
+    firstPoint: data[0], 
+    chartColor,
+    dataPoints: data.slice(0, 3).map(d => ({price: d.price, time: d.timestamp}))
+  });
 
   return (
     <ChartContainer

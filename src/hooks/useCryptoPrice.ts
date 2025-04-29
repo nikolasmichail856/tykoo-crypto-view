@@ -30,6 +30,7 @@ const generateMockPriceData = (symbol: string, period: string): PriceData[] => {
     case 'btc': basePrice = 40000; break;
     case 'eth': basePrice = 2500; break;
     case 'usdc': basePrice = 1; break;
+    default: basePrice = 1000;
   }
   
   const now = new Date();
@@ -128,19 +129,20 @@ export const useCryptoPrice = ({
             price: item[1]
           }));
         
+        console.log(`Fetched ${formattedData.length} price points for ${symbol}`);
         setData(formattedData);
         setLastUpdated(new Date());
+      } else {
+        throw new Error('No price data received from API');
       }
     } catch (error) {
       console.error('Error fetching price data:', error);
       
       // Generate mock data as fallback when API fails
-      if (!data.length) {
-        console.log('Generating mock price data for', symbol);
-        const mockData = generateMockPriceData(symbol, period);
-        setData(mockData);
-        setLastUpdated(new Date());
-      }
+      console.log('Generating mock price data for', symbol);
+      const mockData = generateMockPriceData(symbol, period);
+      setData(mockData);
+      setLastUpdated(new Date());
       
       toast({
         title: "Using generated data",
@@ -152,9 +154,12 @@ export const useCryptoPrice = ({
     }
   };
 
-  // Fetch data when period changes
+  // Fetch data immediately on component mount and when period changes
   useEffect(() => {
-    fetchLatestPrice();
+    if (!data.length) {
+      console.log(`Initial fetch for ${symbol} with period ${period}`);
+      fetchLatestPrice();
+    }
     
     // Set up interval for real-time updates (every 60 seconds to avoid API rate limits)
     const interval = setInterval(fetchLatestPrice, 60000);
