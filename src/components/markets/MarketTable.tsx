@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import CryptoIconRenderer from './CryptoIconRenderer';
 
 interface CryptoData {
   id: string;
@@ -36,7 +37,7 @@ interface MarketTableProps {
   formatLargeNumber: (value: number) => string;
   handleCryptoSelect: (crypto: CryptoData) => void;
   selectedCrypto: CryptoData | null;
-  getCryptoIcon: (symbol: string) => React.ReactNode;
+  getCryptoIcon?: (symbol: string) => React.ReactNode;
 }
 
 const MarketTable: React.FC<MarketTableProps> = ({
@@ -47,8 +48,7 @@ const MarketTable: React.FC<MarketTableProps> = ({
   formatCurrency,
   formatLargeNumber,
   handleCryptoSelect,
-  selectedCrypto,
-  getCryptoIcon
+  selectedCrypto
 }) => {
   return (
     <div className="bg-white rounded-lg border shadow-sm overflow-hidden mb-6">
@@ -109,11 +109,11 @@ const MarketTable: React.FC<MarketTableProps> = ({
                   <TableCell>
                     <div className="flex items-center">
                       <div className="mr-2">
-                        {getCryptoIcon(crypto.symbol)}
+                        <CryptoIconRenderer symbol={crypto.symbol} image={crypto.image} />
                       </div>
                       <div>
                         <div className="font-medium">{crypto.name}</div>
-                        <div className="text-gray-500 text-xs">{crypto.symbol.toUpperCase()}</div>
+                        <div className="text-gray-500 text-xs">{crypto.symbol}</div>
                       </div>
                     </div>
                   </TableCell>

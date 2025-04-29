@@ -1,13 +1,22 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import MarketSkeleton from '@/components/markets/MarketSkeleton';
 import MarketHeader from '@/components/markets/MarketHeader';
 import MarketContent from '@/components/markets/MarketContent';
 import MarketDataProvider from '@/components/markets/MarketDataProvider';
+import { toast } from '@/components/ui/sonner';
 
 const Markets: React.FC = () => {
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+
+  const handleDataRefresh = () => {
+    // This is a placeholder - the actual refresh happens in MarketDataProvider
+    setLastUpdated(new Date());
+    toast.success("Market data is being updated");
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -17,6 +26,8 @@ const Markets: React.FC = () => {
           <MarketHeader 
             title="Live Market Prices" 
             description="Explore real-time cryptocurrency prices for the assets supported on Tykoo."
+            lastUpdated={lastUpdated}
+            onRefresh={handleDataRefresh}
           />
           
           <MarketDataProvider>
