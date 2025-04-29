@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import { Card } from '@/components/ui/card';
 import { RefreshCw } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 
 interface PriceData {
   timestamp: string;
@@ -50,6 +51,7 @@ const PriceChart: React.FC<PriceChartProps> = ({ data: initialData, name, symbol
   const [data, setData] = useState<PriceData[]>(initialData);
   const [isUpdating, setIsUpdating] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const { toast } = useToast();
   
   const getColor = () => {
     switch(symbol.toLowerCase()) {
@@ -62,43 +64,71 @@ const PriceChart: React.FC<PriceChartProps> = ({ data: initialData, name, symbol
 
   const chartColor = getColor();
   
-  useEffect(() => {
-    // Update the chart data every 10 seconds to simulate real-time updates
-    const interval = setInterval(() => {
+  const getCoinGeckoId = () => {
+    switch(symbol.toLowerCase()) {
+      case 'btc': return 'bitcoin';
+      case 'eth': return 'ethereum';
+      case 'usdc': return 'usd-coin';
+      default: return symbol.toLowerCase();
+    }
+  };
+  
+  const fetchLatestPrice = async () => {
+    try {
       setIsUpdating(true);
+      const coinId = getCoinGeckoId();
+      const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=1&interval=minute`);
       
-      // Get the latest price point
-      const lastPrice = data[data.length - 1].price;
-      
-      // Create a small random price movement (between -2% and +2%)
-      const priceChange = lastPrice * (Math.random() * 0.04 - 0.02);
-      const newPrice = lastPrice + priceChange;
-      
-      // Create a new timestamp
-      const now = new Date();
-      
-      // Add new data point and remove the oldest if more than 30 points
-      const newData = [...data, {
-        timestamp: now.toISOString(),
-        price: newPrice
-      }];
-      
-      if (newData.length > 30) {
-        newData.shift();
+      if (!response.ok) {
+        throw new Error('API rate limit reached or network error');
       }
       
-      setData(newData);
-      setLastUpdated(now);
+      const result = await response.json();
+      
+      if (result && result.prices && result.prices.length > 0) {
+        // CoinGecko returns prices as [timestamp, price] arrays
+        const formattedData = result.prices.slice(-30).map((item: [number, number]) => ({
+          timestamp: new Date(item[0]).toISOString(),
+          price: item[1]
+        }));
+        
+        setData(formattedData);
+        setLastUpdated(new Date());
+      }
+    } catch (error) {
+      console.error('Error fetching price data:', error);
+      toast({
+        title: "Couldn't update price data",
+        description: "We'll try again soon",
+        variant: "destructive"
+      });
+    } finally {
       setIsUpdating(false);
-    }, 10000);
+    }
+  };
+  
+  useEffect(() => {
+    // Fetch data initially
+    fetchLatestPrice();
+    
+    // Set up interval for real-time updates (every 60 seconds to avoid API rate limits)
+    const interval = setInterval(fetchLatestPrice, 60000);
     
     return () => clearInterval(interval);
-  }, [data]);
+  }, [symbol]); // Re-fetch when symbol changes
   
   return (
     <div className="w-full h-[300px]">
       <div className="flex justify-between items-center mb-2">
-        <div></div>
+        <div className="text-sm">
+          <button 
+            onClick={() => fetchLatestPrice()} 
+            className="text-tykoo-blue hover:underline text-xs flex items-center"
+            disabled={isUpdating}
+          >
+            Refresh data
+          </button>
+        </div>
         <div className="flex items-center text-xs text-gray-500">
           <RefreshCw className={`h-3 w-3 mr-1 ${isUpdating ? 'animate-spin' : ''}`} />
           <span>
