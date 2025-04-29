@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import HeroWithLogo from './HeroWithLogo';
 
 const Hero = () => {
   return (
@@ -29,10 +30,10 @@ const Hero = () => {
           </div>
           
           <div className="md:w-1/2 animate-fade-in">
-            <img 
-              src="https://images.unsplash.com/photo-1605792657660-596af9009e82?auto=format&fit=crop&q=80&w=1000" 
-              alt="TYKOO Crypto Trading Platform" 
-              className="w-full h-auto rounded-lg shadow-2xl" 
+            <HeroWithLogo 
+              imageSrc="https://images.unsplash.com/photo-1605792657660-596af9009e82?auto=format&fit=crop&q=80&w=1000"
+              logoSrc="/lovable-uploads/6e54c2a3-e21c-485f-a706-f28a8a3d9c31.png"
+              alt="TYKOO Crypto Trading Platform"
             />
           </div>
         </div>
