@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -6,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { CheckCircle2, BriefcaseIcon, UsersIcon, GraduationCap, MapPinIcon, FileTextIcon, ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface JobPosition {
   title: string;
@@ -256,8 +256,10 @@ const Careers = () => {
                   </div>
                   
                   <div className="pt-4">
-                    <Button className="w-full bg-tykoo-blue hover:bg-tykoo-lightBlue">
-                      Apply Now
+                    <Button className="w-full bg-tykoo-blue hover:bg-tykoo-lightBlue" asChild>
+                      <Link to="/support?job=application&position=apply" state={{ jobTitle: selectedJob.title }}>
+                        Apply Now
+                      </Link>
                     </Button>
                   </div>
                 </div>
