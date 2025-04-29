@@ -11,7 +11,7 @@ const SwapButton: React.FC<SwapButtonProps> = ({ onSwap }) => {
   return (
     <Button 
       onClick={onSwap}
-      className="bg-white hover:bg-gray-100 text-violet-600 shadow-md rounded-full h-12 w-12 flex items-center justify-center"
+      className="bg-white hover:bg-gray-100 text-tykoo-blue border-gray-200 shadow-md rounded-full h-12 w-12 flex items-center justify-center"
       variant="outline"
       size="icon"
     >

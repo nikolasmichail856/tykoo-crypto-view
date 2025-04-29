@@ -39,8 +39,8 @@ const CurrencyConverter = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-lavender-100 rounded-2xl p-8 shadow-lg">
-      <h2 className="text-center text-3xl font-bold mb-8 text-indigo-900">
+    <div className="w-full max-w-4xl mx-auto bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+      <h2 className="text-center text-3xl font-bold mb-8 text-tykoo-darkBlue">
         Convert {fromCurrency} to {toCurrency}
       </h2>
       
@@ -81,7 +81,7 @@ const CurrencyConverter = () => {
                 variant="outline" 
                 size="icon" 
                 onClick={handleRefresh} 
-                className="h-8 w-8"
+                className="h-8 w-8 border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue/10"
                 disabled={isLoading}
               >
                 <RefreshCcw className="h-4 w-4" />
@@ -94,7 +94,7 @@ const CurrencyConverter = () => {
         
         <Button 
           onClick={convertCurrency} 
-          className="bg-violet-600 hover:bg-violet-700 text-white px-10 py-6 text-lg rounded-xl shadow-md w-full sm:w-auto"
+          className="bg-tykoo-blue hover:bg-tykoo-darkBlue text-white px-10 py-6 text-lg rounded-xl shadow-md w-full sm:w-auto transition-colors"
           disabled={isLoading}
         >
           {isLoading ? "Converting..." : "Trade now"}

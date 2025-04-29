@@ -15,7 +15,7 @@ const Exchange = () => {
       <main className="flex-grow">
         <ExchangeHero />
         
-        <div className="bg-lavender-50 py-20">
+        <div className="bg-tykoo-lightGray py-20">
           <div className="container mx-auto px-4">
             <CurrencyConverter />
           </div>
