@@ -37,7 +37,7 @@ const About = () => {
             </div>
             <div className="flex-1 flex justify-center">
               <img 
-                src="/lovable-uploads/43fb015d-2a68-4a16-8f83-680f952fbc10.png" 
+                src="/lovable-uploads/3f59da82-63ec-42e5-8290-b796258d700c.png" 
                 alt="TYKOO Logo" 
                 className="h-auto w-auto max-w-full rounded-lg shadow-lg" 
               />
