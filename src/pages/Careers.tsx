@@ -114,53 +114,6 @@ const Careers = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-16 bg-tykoo-lightGray">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-tykoo-darkBlue mb-12 text-center">What Our Team Says</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                quote: "Working at TYKOO has been the highlight of my career. I'm challenged every day and working with some of the brightest minds in the industry.",
-                name: "David Kim",
-                role: "Frontend Developer",
-                avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              },
-              {
-                quote: "I love our company culture. There's a real sense of purpose here, and everyone is committed to making cryptocurrency accessible to all.",
-                name: "Priya Sharma",
-                role: "Product Manager",
-                avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              },
-              {
-                quote: "The leadership team truly cares about employee growth. I've had amazing opportunities to develop my skills and advance my career here.",
-                name: "Marcus Johnson",
-                role: "Security Engineer",
-                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              }
-            ].map((testimonial, idx) => (
-              <Card key={idx} className="bg-white p-6">
-                <CardContent className="p-0">
-                  <p className="text-gray-700 italic mb-6">"{testimonial.quote}"</p>
-                  <div className="flex items-center">
-                    <img 
-                      src={testimonial.avatar} 
-                      alt={testimonial.name} 
-                      className="h-12 w-12 rounded-full object-cover mr-4" 
-                    />
-                    <div>
-                      <h3 className="font-semibold">{testimonial.name}</h3>
-                      <p className="text-gray-600 text-sm">{testimonial.role}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="py-16 bg-tykoo-blue text-white">
         <div className="container mx-auto px-4 text-center">
