@@ -41,7 +41,9 @@ const Navbar = () => {
               </a>
             </Button>
             <Button className="bg-tykoo-blue text-white hover:bg-tykoo-darkBlue">
-              Sign Up
+              <a href="https://app.tykoo.co/register" target="_blank" rel="noopener noreferrer">
+                Sign Up
+              </a>
             </Button>
           </div>
 
@@ -70,7 +72,9 @@ const Navbar = () => {
                 </a>
               </Button>
               <Button className="w-full bg-tykoo-blue text-white">
-                Sign Up
+                <a href="https://app.tykoo.co/register" target="_blank" rel="noopener noreferrer" className="w-full inline-block">
+                  Sign Up
+                </a>
               </Button>
             </div>
           </div>
