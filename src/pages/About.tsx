@@ -46,53 +46,8 @@ const About = () => {
         </div>
       </section>
 
-      {/* Our Team */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-tykoo-darkBlue mb-10 text-center">Our Leadership Team</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Alex Chen",
-                role: "CEO & Co-founder",
-                bio: "Former fintech executive with 15+ years experience in digital payment systems.",
-                avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              },
-              {
-                name: "Sarah Johnson",
-                role: "CTO",
-                bio: "Blockchain developer since 2013, previously led engineering at major crypto exchanges.",
-                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              },
-              {
-                name: "Michael Lee",
-                role: "Chief Security Officer",
-                bio: "Cybersecurity expert with background in financial services protection.",
-                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              }
-            ].map((member, idx) => (
-              <Card key={idx} className="overflow-hidden">
-                <div className="flex justify-center pt-6">
-                  <img 
-                    src={member.avatar} 
-                    alt={member.name} 
-                    className="h-32 w-32 rounded-full object-cover" 
-                  />
-                </div>
-                <CardContent className="text-center pt-4">
-                  <h3 className="font-bold text-xl">{member.name}</h3>
-                  <p className="text-tykoo-blue font-medium mb-2">{member.role}</p>
-                  <p className="text-gray-600">{member.bio}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Our Values */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-tykoo-darkBlue mb-10 text-center">Our Values</h2>
           
