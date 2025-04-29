@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Bitcoin, DollarSign } from 'lucide-react';
+import { DollarSign } from 'lucide-react';
+import CurrencyIcon from '@/components/exchange/converter/CurrencyIcon';
 
 interface CryptoIconRendererProps {
   symbol: string;
@@ -26,17 +27,22 @@ const CryptoIconRenderer: React.FC<CryptoIconRendererProps> = ({ symbol, image }
     );
   }
   
-  // Fallback icons if no image is provided
-  switch(symbol.toLowerCase()) {
-    case 'btc':
-      return <div className="h-8 w-8 flex items-center justify-center"><Bitcoin className="h-6 w-6 text-amber-500" /></div>;
-    case 'eth':
-      return <div className="h-8 w-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-semibold">E</div>;
-    case 'usdc':
-      return <div className="h-8 w-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">$</div>;
-    default:
-      return <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center"><DollarSign className="h-5 w-5" /></div>;
+  // Map the symbol to our supported currency codes
+  const currencyCode = symbol.toUpperCase() === 'BTC' ? 'BTC' : 
+                       symbol.toUpperCase() === 'ETH' ? 'ETH' :
+                       symbol.toUpperCase() === 'USDC' ? 'USDC' : '';
+  
+  // If it's one of our supported currencies, use the CurrencyIcon component
+  if (currencyCode) {
+    return <div className="h-8 w-8 flex items-center justify-center">
+      <CurrencyIcon currencyCode={currencyCode} className="h-6 w-6" />
+    </div>;
   }
+  
+  // Default fallback
+  return <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
+    <DollarSign className="h-5 w-5" />
+  </div>;
 };
 
 export default CryptoIconRenderer;
