@@ -32,13 +32,29 @@ export const formatCryptoAmount = (value: number, currency: string) => {
     }
     return value.toFixed(6);
   }
-  // For other currencies, show up to 6 decimals for small values
+  // For other currencies, show up to 10 decimals for small values
   if (value < 0.01) {
-    return value.toFixed(6).replace(/\.?0+$/, '');
+    return value.toFixed(10).replace(/\.?0+$/, '');
   }
   return value.toFixed(2);
 };
 
 export const formatPercentage = (value: number) => {
   return `${(value * 100).toFixed(2)}%`;
+};
+
+export const formatDateForPeriod = (timestamp: string, period: string) => {
+  const date = new Date(timestamp);
+  const numDays = Number(period);
+  
+  if (numDays <= 1) {
+    // For 24h, show hour:minute
+    return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+  } else if (numDays <= 7) {
+    // For 7d, show day and hour
+    return `${date.getDate()}/${date.getMonth() + 1} ${date.getHours()}:00`;
+  } else {
+    // For 30d and 1y, show month and day
+    return `${date.getMonth() + 1}/${date.getDate()}`;
+  }
 };

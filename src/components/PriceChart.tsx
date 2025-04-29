@@ -24,6 +24,7 @@ interface PriceChartProps {
   data: PriceData[];
   name: string;
   symbol: string;
+  period?: string;
 }
 
 const formatCurrency = (value: number) => {
@@ -47,7 +48,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>)
   return null;
 };
 
-const PriceChart: React.FC<PriceChartProps> = ({ data: initialData, name, symbol }) => {
+const PriceChart: React.FC<PriceChartProps> = ({ data: initialData, name, symbol, period = '1' }) => {
   const [data, setData] = useState<PriceData[]>(initialData);
   const [isUpdating, setIsUpdating] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
@@ -73,11 +74,40 @@ const PriceChart: React.FC<PriceChartProps> = ({ data: initialData, name, symbol
     }
   };
   
+  const formatDateByPeriod = (timestamp: string) => {
+    const date = new Date(timestamp);
+    const numDays = Number(period);
+    
+    if (numDays <= 1) {
+      // For 24h, show hour:minute
+      return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+    } else if (numDays <= 7) {
+      // For 7d, show day and hour
+      return `${date.getDate()}/${date.getMonth() + 1} ${date.getHours()}:00`;
+    } else {
+      // For 30d and 1y, show month and day
+      return `${date.getMonth() + 1}/${date.getDate()}`;
+    }
+  };
+  
   const fetchLatestPrice = async () => {
     try {
       setIsUpdating(true);
       const coinId = getCoinGeckoId();
-      const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=1&interval=minute`);
+      
+      // Determine interval based on period
+      let interval = 'hourly';
+      if (Number(period) <= 1) {
+        interval = 'hourly'; // For 24h
+      } else if (Number(period) <= 7) {
+        interval = 'hourly'; // For 7d
+      } else if (Number(period) <= 30) {
+        interval = 'daily'; // For 30d
+      } else {
+        interval = 'daily'; // For 1y
+      }
+      
+      const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${period}`);
       
       if (!response.ok) {
         throw new Error('API rate limit reached or network error');
@@ -86,11 +116,17 @@ const PriceChart: React.FC<PriceChartProps> = ({ data: initialData, name, symbol
       const result = await response.json();
       
       if (result && result.prices && result.prices.length > 0) {
+        // Limit the number of data points to avoid overcrowding the chart
+        const maxDataPoints = 30;
+        const step = Math.max(1, Math.floor(result.prices.length / maxDataPoints));
+        
         // CoinGecko returns prices as [timestamp, price] arrays
-        const formattedData = result.prices.slice(-30).map((item: [number, number]) => ({
-          timestamp: new Date(item[0]).toISOString(),
-          price: item[1]
-        }));
+        const formattedData = result.prices
+          .filter((_: any, index: number) => index % step === 0) // Take every n-th element
+          .map((item: [number, number]) => ({
+            timestamp: new Date(item[0]).toISOString(),
+            price: item[1]
+          }));
         
         setData(formattedData);
         setLastUpdated(new Date());
@@ -107,15 +143,15 @@ const PriceChart: React.FC<PriceChartProps> = ({ data: initialData, name, symbol
     }
   };
   
+  // Fetch data when period changes
   useEffect(() => {
-    // Fetch data initially
     fetchLatestPrice();
     
     // Set up interval for real-time updates (every 60 seconds to avoid API rate limits)
     const interval = setInterval(fetchLatestPrice, 60000);
     
     return () => clearInterval(interval);
-  }, [symbol]); // Re-fetch when symbol changes
+  }, [symbol, period]); // Re-fetch when symbol or period changes
   
   return (
     <div className="w-full h-[300px]">
@@ -158,10 +194,7 @@ const PriceChart: React.FC<PriceChartProps> = ({ data: initialData, name, symbol
             <XAxis 
               dataKey="timestamp" 
               tick={{ fontSize: 12 }}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
-              }}
+              tickFormatter={formatDateByPeriod}
               stroke="#94a3b8"
             />
             <YAxis 

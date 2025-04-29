@@ -7,12 +7,23 @@ import { Search } from 'lucide-react';
 interface MarketControlsProps {
   searchTerm: string;
   setSearchTerm: (term: string) => void;
+  selectedPeriod: string;
+  setSelectedPeriod: (period: string) => void;
 }
 
 const MarketControls: React.FC<MarketControlsProps> = ({
   searchTerm,
-  setSearchTerm
+  setSearchTerm,
+  selectedPeriod,
+  setSelectedPeriod
 }) => {
+  const periodOptions = [
+    { value: '1', label: '24h' },
+    { value: '7', label: '7d' },
+    { value: '30', label: '30d' },
+    { value: '365', label: '1y' }
+  ];
+
   return (
     <div className="mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
       <div className="relative w-full md:w-1/3">
@@ -27,18 +38,20 @@ const MarketControls: React.FC<MarketControlsProps> = ({
       </div>
       
       <div className="flex flex-wrap gap-2 justify-center md:justify-end">
-        <Button variant="outline" className="border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue hover:text-white">
-          24h
-        </Button>
-        <Button variant="outline" className="border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue hover:text-white">
-          7d
-        </Button>
-        <Button variant="outline" className="border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue hover:text-white">
-          30d
-        </Button>
-        <Button variant="outline" className="border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue hover:text-white">
-          1y
-        </Button>
+        {periodOptions.map((period) => (
+          <Button 
+            key={period.value}
+            variant="outline"
+            className={
+              selectedPeriod === period.value
+                ? "bg-tykoo-blue border-tykoo-blue text-white hover:bg-tykoo-blue hover:text-white"
+                : "border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue hover:text-white"
+            }
+            onClick={() => setSelectedPeriod(period.value)}
+          >
+            {period.label}
+          </Button>
+        ))}
       </div>
     </div>
   );
