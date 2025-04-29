@@ -63,7 +63,9 @@ const GetStarted = () => {
             </div>
             
             <Button className="bg-tykoo-blue text-white hover:bg-tykoo-darkBlue px-8 py-6 text-lg">
-              Create Free Account
+              <a href="https://app.tykoo.co/register" target="_blank" rel="noopener noreferrer" className="w-full inline-block">
+                Create Free Account
+              </a>
             </Button>
           </div>
           
