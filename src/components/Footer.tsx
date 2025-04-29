@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -8,7 +9,7 @@ const Footer = () => {
           <div>
             <Link to="/" className="flex items-center mb-4">
               <img 
-                src="/lovable-uploads/27cfd1ce-d2fa-48b4-8481-d432100d8e9e.png" 
+                src="/lovable-uploads/dffa2e9c-d3d5-4757-924b-57e02f3ca71b.png" 
                 alt="TYKOO Logo" 
                 className="h-8 w-auto mr-2" 
               />
