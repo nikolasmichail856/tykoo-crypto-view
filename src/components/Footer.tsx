@@ -24,9 +24,6 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Products</h3>
             <ul className="space-y-2 text-gray-400">
               <li><Link to="/exchange" className="hover:text-white">Exchange</Link></li>
-              <li><Link to="/nft-marketplace" className="hover:text-white">NFT Marketplace</Link></li>
-              <li><Link to="/defi" className="hover:text-white">DeFi</Link></li>
-              <li><Link to="/staking" className="hover:text-white">Staking</Link></li>
             </ul>
           </div>
           
