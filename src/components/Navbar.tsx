@@ -36,7 +36,9 @@ const Navbar = () => {
           {/* Auth Buttons (Desktop) */}
           <div className="hidden md:flex items-center space-x-4">
             <Button variant="outline" className="border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue hover:text-white">
-              Sign In
+              <a href="https://app.tykoo.co/login" target="_blank" rel="noopener noreferrer">
+                Sign In
+              </a>
             </Button>
             <Button className="bg-tykoo-blue text-white hover:bg-tykoo-darkBlue">
               Sign Up
@@ -63,7 +65,9 @@ const Navbar = () => {
             
             <div className="pt-4 space-y-2">
               <Button variant="outline" className="w-full border-tykoo-blue text-tykoo-blue">
-                Sign In
+                <a href="https://app.tykoo.co/login" target="_blank" rel="noopener noreferrer" className="w-full inline-block">
+                  Sign In
+                </a>
               </Button>
               <Button className="w-full bg-tykoo-blue text-white">
                 Sign Up
