@@ -50,6 +50,17 @@ const ChartRenderer: React.FC<ChartRendererProps> = ({
   };
 
   const chartColor = getColor();
+  
+  // Add check for empty data
+  if (!data || data.length === 0) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-gray-50 rounded-md">
+        <p className="text-gray-500">No chart data available</p>
+      </div>
+    );
+  }
+
+  console.log('Rendering chart with data:', { dataLength: data.length, firstPoint: data[0], chartColor });
 
   return (
     <ChartContainer

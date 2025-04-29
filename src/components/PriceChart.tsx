@@ -31,19 +31,24 @@ const PriceChart: React.FC<PriceChartProps> = ({
     initialData
   });
   
+  // Debug log to track data going into the chart
+  console.log('Price Chart Data:', { symbol, period, dataLength: data.length, firstItem: data[0] });
+  
   return (
-    <div className="w-full h-[300px]">
+    <div className="w-full h-[400px] flex flex-col">
       <ChartHeader 
         isUpdating={isUpdating} 
         lastUpdated={lastUpdated} 
         onRefresh={refreshData} 
       />
-      <ChartRenderer 
-        data={data} 
-        symbol={symbol} 
-        period={period}
-        formatDateByPeriod={formatDateByPeriod}
-      />
+      <div className="flex-grow">
+        <ChartRenderer 
+          data={data} 
+          symbol={symbol} 
+          period={period}
+          formatDateByPeriod={formatDateByPeriod}
+        />
+      </div>
     </div>
   );
 };
