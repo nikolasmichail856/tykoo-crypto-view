@@ -30,7 +30,7 @@ const Hero = () => {
           
           <div className="md:w-1/2 animate-fade-in">
             <img 
-              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000" 
+              src="https://images.unsplash.com/photo-1605792657660-596af9009e82?auto=format&fit=crop&q=80&w=1000" 
               alt="TYKOO Crypto Trading Platform" 
               className="w-full h-auto rounded-lg shadow-2xl" 
             />
