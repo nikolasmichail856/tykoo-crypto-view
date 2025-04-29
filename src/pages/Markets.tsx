@@ -1,40 +1,16 @@
 
+import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { useState, useEffect } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Search, TrendingUp, TrendingDown, Bitcoin } from 'lucide-react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import PriceChart from '@/components/PriceChart';
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from '@/components/ui/tabs';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { Bitcoin } from 'lucide-react';
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { formatCurrency, formatLargeNumber } from '@/utils/formatters';
+import MarketTable from '@/components/markets/MarketTable';
+import MarketControls from '@/components/markets/MarketControls';
+import CoinChartCard from '@/components/markets/CoinChartCard';
+import CoinStats from '@/components/markets/CoinStats';
+import WhyTradeSection from '@/components/markets/WhyTradeSection';
+import MarketSkeleton from '@/components/markets/MarketSkeleton';
 
 interface CryptoData {
   id: string;
@@ -134,28 +110,6 @@ const Markets = () => {
     }, 500);
   }, []);
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: value < 1 ? 4 : 2,
-      maximumFractionDigits: value < 1 ? 4 : 2,
-    }).format(value);
-  };
-  
-  const formatLargeNumber = (value: number) => {
-    if (value >= 1000000000000) {
-      return `$${(value / 1000000000000).toFixed(2)}T`;
-    }
-    if (value >= 1000000000) {
-      return `$${(value / 1000000000).toFixed(2)}B`;
-    }
-    if (value >= 1000000) {
-      return `$${(value / 1000000).toFixed(2)}M`;
-    }
-    return formatCurrency(value);
-  };
-
   const handleSort = (field: string) => {
     if (activeSortField === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
@@ -216,251 +170,45 @@ const Markets = () => {
           <p className="text-gray-600 mb-8">Explore real-time cryptocurrency prices for the assets supported on Tykoo.</p>
           
           {isLoading ? (
-            <div className="animate-pulse space-y-6">
-              <div className="h-10 bg-gray-200 rounded mb-4 w-full"></div>
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="col-span-2">
-                  <div className="h-[400px] bg-gray-200 rounded mb-4"></div>
-                </div>
-                <div>
-                  <div className="h-[400px] bg-gray-200 rounded"></div>
-                </div>
-              </div>
-            </div>
+            <MarketSkeleton />
           ) : (
             <>
-              <div className="mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
-                <div className="relative w-full md:w-1/3">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-                  <Input 
-                    type="text" 
-                    placeholder="Search coins..." 
-                    className="pl-10 py-6"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-                
-                <div className="flex flex-wrap gap-2 justify-center md:justify-end">
-                  <Button variant="outline" className="border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue hover:text-white">
-                    24h
-                  </Button>
-                  <Button variant="outline" className="border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue hover:text-white">
-                    7d
-                  </Button>
-                  <Button variant="outline" className="border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue hover:text-white">
-                    30d
-                  </Button>
-                  <Button variant="outline" className="border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue hover:text-white">
-                    1y
-                  </Button>
-                </div>
-              </div>
+              <MarketControls 
+                searchTerm={searchTerm} 
+                setSearchTerm={setSearchTerm} 
+              />
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                 <div className="lg:col-span-2">
                   {selectedCrypto && (
-                    <Card className="shadow-sm">
-                      <CardHeader className="pb-2">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-2">
-                            <img src={selectedCrypto.image} alt={selectedCrypto.name} className="w-8 h-8" />
-                            <div>
-                              <CardTitle className="text-2xl">{selectedCrypto.name}</CardTitle>
-                              <CardDescription className="text-gray-500">{selectedCrypto.symbol}</CardDescription>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-2xl font-bold">{formatCurrency(selectedCrypto.current_price)}</div>
-                            <div className={`flex items-center justify-end ${selectedCrypto.price_change_percentage_24h >= 0 ? 'text-tykoo-green' : 'text-tykoo-red'}`}>
-                              {selectedCrypto.price_change_percentage_24h >= 0 ? (
-                                <TrendingUp className="h-4 w-4 mr-1" />
-                              ) : (
-                                <TrendingDown className="h-4 w-4 mr-1" />
-                              )}
-                              <span>{selectedCrypto.price_change_percentage_24h.toFixed(2)}%</span>
-                            </div>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <PriceChart data={selectedCrypto.price_history} name={selectedCrypto.name} symbol={selectedCrypto.symbol} />
-                      </CardContent>
-                    </Card>
+                    <CoinChartCard selectedCrypto={selectedCrypto} formatCurrency={formatCurrency} />
                   )}
                 </div>
                 
                 <div>
                   {selectedCrypto && (
-                    <Card className="shadow-sm h-full">
-                      <CardHeader>
-                        <CardTitle className="text-xl">Market Stats</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <Tabs defaultValue="overview">
-                          <TabsList className="w-full">
-                            <TabsTrigger value="overview" className="flex-1">Overview</TabsTrigger>
-                            <TabsTrigger value="details" className="flex-1">Details</TabsTrigger>
-                          </TabsList>
-                          <TabsContent value="overview" className="pt-4 space-y-4">
-                            <div className="flex justify-between">
-                              <span className="text-gray-500">Market Cap</span>
-                              <span className="font-medium">{formatLargeNumber(selectedCrypto.market_cap)}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-500">24h Volume</span>
-                              <span className="font-medium">{formatLargeNumber(selectedCrypto.total_volume)}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-500">24h High</span>
-                              <span className="font-medium">{formatCurrency(selectedCrypto.high_24h)}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-500">24h Low</span>
-                              <span className="font-medium">{formatCurrency(selectedCrypto.low_24h)}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-500">Circulating Supply</span>
-                              <span className="font-medium">{selectedCrypto.circulating_supply.toLocaleString()}</span>
-                            </div>
-                          </TabsContent>
-                          <TabsContent value="details" className="pt-4">
-                            <p className="text-gray-600 text-sm">{selectedCrypto.description}</p>
-                          </TabsContent>
-                        </Tabs>
-                        
-                        <div className="pt-4">
-                          <Button className="w-full bg-tykoo-blue text-white hover:bg-tykoo-darkBlue">
-                            Trade {selectedCrypto.symbol}
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <CoinStats 
+                      selectedCrypto={selectedCrypto}
+                      formatLargeNumber={formatLargeNumber}
+                      formatCurrency={formatCurrency}
+                    />
                   )}
                 </div>
               </div>
               
-              <div className="bg-white rounded-lg border shadow-sm overflow-hidden mb-6">
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-[80px]">#</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead 
-                          className="cursor-pointer hover:text-tykoo-blue"
-                          onClick={() => handleSort("current_price")}
-                        >
-                          Price 
-                          {activeSortField === "current_price" && (
-                            sortDirection === "asc" ? " ↑" : " ↓"
-                          )}
-                        </TableHead>
-                        <TableHead 
-                          className="cursor-pointer hover:text-tykoo-blue"
-                          onClick={() => handleSort("price_change_percentage_24h")}
-                        >
-                          24h Change
-                          {activeSortField === "price_change_percentage_24h" && (
-                            sortDirection === "asc" ? " ↑" : " ↓"
-                          )}
-                        </TableHead>
-                        <TableHead 
-                          className="cursor-pointer hover:text-tykoo-blue"
-                          onClick={() => handleSort("market_cap")}
-                        >
-                          Market Cap
-                          {activeSortField === "market_cap" && (
-                            sortDirection === "asc" ? " ↑" : " ↓"
-                          )}
-                        </TableHead>
-                        <TableHead 
-                          className="cursor-pointer hover:text-tykoo-blue"
-                          onClick={() => handleSort("total_volume")}
-                        >
-                          Volume (24h)
-                          {activeSortField === "total_volume" && (
-                            sortDirection === "asc" ? " ↑" : " ↓"
-                          )}
-                        </TableHead>
-                        <TableHead className="text-right">Action</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {sortedData.length > 0 ? (
-                        sortedData.map((crypto, index) => (
-                          <TableRow 
-                            key={crypto.id}
-                            className={`cursor-pointer ${selectedCrypto?.id === crypto.id ? 'bg-gray-50' : ''}`}
-                            onClick={() => handleCryptoSelect(crypto)}
-                          >
-                            <TableCell className="font-medium">{index + 1}</TableCell>
-                            <TableCell>
-                              <div className="flex items-center">
-                                <div className="mr-2">
-                                  {getCryptoIcon(crypto.symbol)}
-                                </div>
-                                <div>
-                                  <div className="font-medium">{crypto.name}</div>
-                                  <div className="text-gray-500 text-xs">{crypto.symbol.toUpperCase()}</div>
-                                </div>
-                              </div>
-                            </TableCell>
-                            <TableCell className="font-medium">{formatCurrency(crypto.current_price)}</TableCell>
-                            <TableCell>
-                              <div className={`flex items-center ${crypto.price_change_percentage_24h >= 0 ? 'text-tykoo-green' : 'text-tykoo-red'}`}>
-                                {crypto.price_change_percentage_24h >= 0 ? (
-                                  <TrendingUp className="h-4 w-4 mr-1" />
-                                ) : (
-                                  <TrendingDown className="h-4 w-4 mr-1" />
-                                )}
-                                <span>{crypto.price_change_percentage_24h.toFixed(2)}%</span>
-                              </div>
-                            </TableCell>
-                            <TableCell>{formatLargeNumber(crypto.market_cap)}</TableCell>
-                            <TableCell>{formatLargeNumber(crypto.total_volume)}</TableCell>
-                            <TableCell className="text-right">
-                              <Button size="sm" className="bg-tykoo-blue text-white hover:bg-tykoo-darkBlue">
-                                Trade
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        ))
-                      ) : (
-                        <TableRow>
-                          <TableCell colSpan={7} className="text-center py-8">
-                            No cryptocurrencies found matching your search.
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </div>
-              </div>
-
-              <div className="mt-6">
-                <h2 className="text-xl font-bold text-tykoo-darkBlue mb-4">Why Trade on Tykoo?</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <Card>
-                    <CardContent className="pt-6">
-                      <h3 className="text-lg font-semibold mb-2">Simple On/Off Ramps</h3>
-                      <p className="text-gray-600">Easily deposit and withdraw your funds with our straightforward fiat gateways.</p>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardContent className="pt-6">
-                      <h3 className="text-lg font-semibold mb-2">Focused Selection</h3>
-                      <p className="text-gray-600">We offer only the most important cryptocurrencies: Bitcoin, Ethereum, and USDC.</p>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardContent className="pt-6">
-                      <h3 className="text-lg font-semibold mb-2">Secure Storage</h3>
-                      <p className="text-gray-600">Industry-leading security practices to keep your digital assets safe.</p>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
+              <MarketTable
+                cryptoData={sortedData}
+                activeSortField={activeSortField}
+                sortDirection={sortDirection}
+                handleSort={handleSort}
+                formatCurrency={formatCurrency}
+                formatLargeNumber={formatLargeNumber}
+                handleCryptoSelect={handleCryptoSelect}
+                selectedCrypto={selectedCrypto}
+                getCryptoIcon={getCryptoIcon}
+              />
+              
+              <WhyTradeSection />
 
               <div className="flex justify-center mt-8">
                 <Pagination>
