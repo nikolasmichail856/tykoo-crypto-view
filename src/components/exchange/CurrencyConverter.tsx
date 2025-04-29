@@ -1,12 +1,10 @@
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import { useCurrencyConverter } from "@/hooks/useCurrencyConverter";
-import CurrencyForm from "./converter/CurrencyForm";
+import CurrencyInput from "./converter/CurrencyInput";
 import SwapButton from "./converter/SwapButton";
-import CurrencyResult from "./converter/CurrencyResult";
 
 const CurrencyConverter = () => {
   const {
@@ -25,47 +23,53 @@ const CurrencyConverter = () => {
   } = useCurrencyConverter();
 
   return (
-    <Card className="shadow-lg">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl">Currency Converter</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-6">
-          <CurrencyForm
-            amount={amount}
-            setAmount={setAmount}
-            fromCurrency={fromCurrency}
-            setFromCurrency={setFromCurrency}
-            fromOptions={getFromOptions()}
-            handleSwapCurrencies={handleSwapCurrencies}
+    <div className="w-full max-w-4xl mx-auto">
+      <h2 className="text-center text-3xl font-bold mb-8 text-indigo-900">
+        Convert {fromCurrency} to {toCurrency}
+      </h2>
+      
+      <div className="flex flex-col md:flex-row items-center gap-2 mb-8">
+        <div className="w-full md:w-5/12">
+          <CurrencyInput
+            value={amount}
+            onChange={setAmount}
+            currency={fromCurrency}
+            setCurrency={setFromCurrency}
+            options={getFromOptions()}
           />
-
+        </div>
+        
+        <div className="flex justify-center items-center w-full md:w-2/12">
           <SwapButton onSwap={handleSwapCurrencies} />
-
-          <CurrencyResult
-            toCurrency={toCurrency}
-            setToCurrency={setToCurrency}
-            toOptions={getToOptions()}
-            convertedAmount={convertedAmount}
+        </div>
+        
+        <div className="w-full md:w-5/12">
+          <CurrencyInput
+            value={convertedAmount.toString()}
+            onChange={() => {}}
+            currency={toCurrency}
+            setCurrency={setToCurrency}
+            options={getToOptions()}
+            readOnly={true}
             isLoading={isLoading}
           />
-
-          <Button 
-            onClick={convertCurrency} 
-            className="w-full bg-tykoo-blue hover:bg-blue-600"
-            disabled={isLoading}
-          >
-            {isLoading ? "Converting..." : "Convert"}
-            {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
-          </Button>
-
-          <div className="text-sm text-gray-500 text-center mt-4">
-            <p>Exchange rates are for demonstration purposes only.</p>
-            <p>Real-world rates may vary. Updated hourly.</p>
-          </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+      
+      <div className="flex justify-center">
+        <Button 
+          onClick={convertCurrency} 
+          className="bg-violet-600 hover:bg-violet-700 text-white px-8 py-6 text-lg rounded-xl"
+          disabled={isLoading}
+        >
+          {isLoading ? "Converting..." : "Trade now"}
+        </Button>
+      </div>
+
+      <div className="text-sm text-gray-500 text-center mt-8">
+        <p>Exchange rates are updated hourly. Real-world rates may vary.</p>
+      </div>
+    </div>
   );
 };
 

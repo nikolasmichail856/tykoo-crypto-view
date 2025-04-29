@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftRight } from "lucide-react";
+import { ArrowRightLeft } from "lucide-react";
 
 interface SwapButtonProps {
   onSwap: () => void;
@@ -9,16 +9,14 @@ interface SwapButtonProps {
 
 const SwapButton: React.FC<SwapButtonProps> = ({ onSwap }) => {
   return (
-    <div className="flex justify-center">
-      <Button 
-        variant="outline" 
-        size="icon"
-        onClick={onSwap}
-        className="rounded-full"
-      >
-        <ArrowLeftRight className="h-5 w-5" />
-      </Button>
-    </div>
+    <Button 
+      onClick={onSwap}
+      className="bg-lavender-100 hover:bg-lavender-200 text-indigo-600 rounded-full h-12 w-12 flex items-center justify-center"
+      variant="outline"
+      size="icon"
+    >
+      <ArrowRightLeft className="h-6 w-6" />
+    </Button>
   );
 };
 
