@@ -16,7 +16,7 @@ interface CryptoData {
 const fetchExchangeRates = async () => {
   try {
     // Using the free currency API from ExchangeRate-API
-    const response = await fetch('https://open.er-api.com/v6/latest/USD');
+    const response = await fetch('https://open.er-api.com/v6/latest/EUR');
     if (!response.ok) {
       throw new Error('Failed to fetch exchange rates');
     }
@@ -31,7 +31,7 @@ const fetchExchangeRates = async () => {
 const fetchCryptoPrices = async () => {
   try {
     const response = await fetch(
-      'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,usd-coin&order=market_cap_desc&per_page=100&page=1'
+      'https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&ids=bitcoin,ethereum,usd-coin&order=market_cap_desc&per_page=100&page=1'
     );
     if (!response.ok) {
       throw new Error('Failed to fetch crypto prices');
@@ -46,7 +46,7 @@ const fetchCryptoPrices = async () => {
 
 export const useCurrencyConverter = () => {
   const [amount, setAmount] = useState<string>("1");
-  const [fromCurrency, setFromCurrency] = useState<string>("EUR");
+  const [fromCurrency, setFromCurrency] = useState<string>("USD");
   const [toCurrency, setToCurrency] = useState<string>("USDC");
   const [convertedAmount, setConvertedAmount] = useState<number>(0);
 
@@ -75,6 +75,7 @@ export const useCurrencyConverter = () => {
   ];
 
   const fiatOptions: CurrencyOption[] = [
+    { value: "USD", label: "USD" },
     { value: "EUR", label: "EUR" },
   ];
 
@@ -98,15 +99,15 @@ export const useCurrencyConverter = () => {
     switch(currency) {
       case "BTC": {
         const btcData = cryptoData.find((crypto: CryptoData) => crypto.id === 'bitcoin');
-        return btcData ? btcData.current_price : 60000; // Fallback if data not found
+        return btcData ? btcData.current_price : 55000; // Fallback if data not found (EUR value)
       }
       case "ETH": {
         const ethData = cryptoData.find((crypto: CryptoData) => crypto.id === 'ethereum');
-        return ethData ? ethData.current_price : 3000; // Fallback if data not found
+        return ethData ? ethData.current_price : 2800; // Fallback if data not found (EUR value)
       }
       case "USDC": {
         const usdcData = cryptoData.find((crypto: CryptoData) => crypto.id === 'usd-coin');
-        return usdcData ? usdcData.current_price : 1; // Fallback if data not found
+        return usdcData ? usdcData.current_price : 0.92; // Fallback if data not found (EUR value)
       }
       default: return 1;
     }
@@ -121,37 +122,39 @@ export const useCurrencyConverter = () => {
 
     const numericAmount = parseFloat(amount) || 0;
     
-    // Step 1: Convert from source currency to USD as the common denominator
-    let amountInUsd;
+    // Step 1: Convert from source currency to EUR as the common denominator
+    let amountInEur;
     
-    if (fromCurrency === "USD") {
-      amountInUsd = numericAmount;
-    } else if (fromCurrency === "EUR") {
-      // For EUR to USD, we divide by the EUR rate because rates are expressed as USD to X
-      amountInUsd = numericAmount / exchangeRates.EUR;
+    if (fromCurrency === "EUR") {
+      amountInEur = numericAmount;
+    } else if (fromCurrency === "USD") {
+      // For USD to EUR conversion
+      amountInEur = numericAmount / exchangeRates.USD;
     } else if (cryptoOptions.some(opt => opt.value === fromCurrency)) {
-      // For crypto to USD conversion
+      // For crypto to EUR conversion
       if (fromCurrency === "USDC") {
-        amountInUsd = numericAmount; // USDC is 1:1 with USD
+        // USDC price is already in EUR from our API call
+        amountInEur = numericAmount * getCryptoRate("USDC");
       } else {
-        amountInUsd = numericAmount * getCryptoRate(fromCurrency);
+        amountInEur = numericAmount * getCryptoRate(fromCurrency);
       }
     }
     
-    // Step 2: Convert from USD to target currency
+    // Step 2: Convert from EUR to target currency
     let result = 0;
     
-    if (toCurrency === "USD") {
-      result = amountInUsd as number;
-    } else if (toCurrency === "EUR") {
-      // For USD to EUR, we multiply by the EUR rate
-      result = (amountInUsd as number) * exchangeRates.EUR;
+    if (toCurrency === "EUR") {
+      result = amountInEur as number;
+    } else if (toCurrency === "USD") {
+      // For EUR to USD conversion
+      result = (amountInEur as number) * exchangeRates.USD;
     } else if (cryptoOptions.some(opt => opt.value === toCurrency)) {
-      // For USD to crypto conversion
+      // For EUR to crypto conversion
       if (toCurrency === "USDC") {
-        result = amountInUsd as number; // USDC is 1:1 with USD
+        // USDC price is already in EUR from our API call
+        result = (amountInEur as number) / getCryptoRate("USDC");
       } else {
-        result = (amountInUsd as number) / getCryptoRate(toCurrency);
+        result = (amountInEur as number) / getCryptoRate(toCurrency);
       }
     }
     

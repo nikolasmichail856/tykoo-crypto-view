@@ -14,6 +14,7 @@ import {
 import { Card } from '@/components/ui/card';
 import { RefreshCw } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { formatCurrency } from '@/utils/formatters';
 
 interface PriceData {
   timestamp: string;
@@ -26,15 +27,6 @@ interface PriceChartProps {
   symbol: string;
   period?: string;
 }
-
-const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: value < 1 ? 4 : 2,
-    maximumFractionDigits: value < 1 ? 4 : 2,
-  }).format(value);
-};
 
 const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
   if (active && payload && payload.length) {
@@ -107,7 +99,7 @@ const PriceChart: React.FC<PriceChartProps> = ({ data: initialData, name, symbol
         interval = 'daily'; // For 1y
       }
       
-      const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${period}`);
+      const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=eur&days=${period}`);
       
       if (!response.ok) {
         throw new Error('API rate limit reached or network error');
@@ -202,15 +194,18 @@ const PriceChart: React.FC<PriceChartProps> = ({ data: initialData, name, symbol
               padding={{ left: 10, right: 10 }}
               // Limit the number of ticks to prevent overcrowding
               tickCount={5}
+              height={30}
+              minTickGap={30}
             />
             <YAxis 
               domain={['auto', 'auto']}
               tick={{ fontSize: 12 }}
               tickFormatter={(value) => {
-                if (value >= 1000) return `$${(value / 1000).toFixed(1)}K`;
-                return `$${value}`;
+                if (value >= 1000) return `€${(value / 1000).toFixed(1)}K`;
+                return `€${value}`;
               }}
               stroke="#94a3b8"
+              width={50}
             />
             <Tooltip content={<CustomTooltip />} />
             <Area 

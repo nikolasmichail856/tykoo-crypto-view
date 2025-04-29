@@ -26,6 +26,11 @@ const CurrencyConverter = () => {
     refreshRates
   } = useCurrencyConverter();
 
+  // Set default currency to EUR when component loads
+  useEffect(() => {
+    setFromCurrency("EUR");
+  }, []);
+
   // Run conversion when any input values change
   useEffect(() => {
     if (amount && fromCurrency && toCurrency) {

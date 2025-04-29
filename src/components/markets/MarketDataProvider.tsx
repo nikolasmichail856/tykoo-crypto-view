@@ -54,7 +54,7 @@ const MarketDataProvider: React.FC<MarketDataProviderProps> = ({ children }) => 
   // Function to generate price history based on selected period
   const fetchPriceHistory = async (coinId: string, days: string) => {
     try {
-      const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${days}`);
+      const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=eur&days=${days}`);
       
       if (!response.ok) {
         throw new Error(`Failed to fetch price history for ${coinId}`);
@@ -84,7 +84,7 @@ const MarketDataProvider: React.FC<MarketDataProviderProps> = ({ children }) => 
     try {
       const coinIds = 'bitcoin,ethereum,usd-coin';
       const response = await fetch(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coinIds}&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h`
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&ids=${coinIds}&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h`
       );
       
       if (!response.ok) {
@@ -199,46 +199,46 @@ const MarketDataProvider: React.FC<MarketDataProviderProps> = ({ children }) => 
         id: 'bitcoin',
         name: 'Bitcoin',
         symbol: 'BTC',
-        current_price: 64352.12,
+        current_price: 58352.12, // Using EUR value (approximate conversion)
         price_change_percentage_24h: 2.35,
-        market_cap: 1258000000000,
-        total_volume: 28500000000,
+        market_cap: 1158000000000,
+        total_volume: 26500000000,
         image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
         description: COIN_DESCRIPTIONS.bitcoin,
-        high_24h: 65890.45,
-        low_24h: 63120.78,
+        high_24h: 59890.45,
+        low_24h: 57120.78,
         circulating_supply: 19567893,
-        price_history: generatePriceHistory(64000, 0.1)
+        price_history: generatePriceHistory(58000, 0.1)
       },
       {
         id: 'ethereum',
         name: 'Ethereum',
         symbol: 'ETH',
-        current_price: 3456.78,
+        current_price: 3156.78, // Using EUR value (approximate conversion)
         price_change_percentage_24h: -1.23,
-        market_cap: 415000000000,
-        total_volume: 15200000000,
+        market_cap: 380000000000,
+        total_volume: 14200000000,
         image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
         description: COIN_DESCRIPTIONS.ethereum,
-        high_24h: 3560.92,
-        low_24h: 3398.45,
+        high_24h: 3260.92,
+        low_24h: 3098.45,
         circulating_supply: 120250381,
-        price_history: generatePriceHistory(3450, 0.15)
+        price_history: generatePriceHistory(3150, 0.15)
       },
       {
         id: 'usd-coin',
         name: 'USD Coin',
         symbol: 'USDC',
-        current_price: 1.00,
+        current_price: 0.92, // Using EUR value (approximate conversion from USD)
         price_change_percentage_24h: 0.01,
-        market_cap: 29000000000,
-        total_volume: 1850000000,
+        market_cap: 27000000000,
+        total_volume: 1750000000,
         image: 'https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png',
         description: COIN_DESCRIPTIONS['usd-coin'],
-        high_24h: 1.01,
-        low_24h: 0.99,
+        high_24h: 0.93,
+        low_24h: 0.91,
         circulating_supply: 29000000000,
-        price_history: generatePriceHistory(1, 0.005)
+        price_history: generatePriceHistory(0.92, 0.005)
       }
     ];
   };
