@@ -196,6 +196,12 @@ const PriceChart: React.FC<PriceChartProps> = ({ data: initialData, name, symbol
               tick={{ fontSize: 12 }}
               tickFormatter={formatDateByPeriod}
               stroke="#94a3b8"
+              // Hide the domain line to prevent overlapping with table rows
+              axisLine={false}
+              // Remove padding to prevent overflow outside chart area
+              padding={{ left: 10, right: 10 }}
+              // Limit the number of ticks to prevent overcrowding
+              tickCount={5}
             />
             <YAxis 
               domain={['auto', 'auto']}
