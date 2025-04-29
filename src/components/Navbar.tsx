@@ -23,7 +23,6 @@ const Navbar = () => {
                 alt="TYKOO Logo" 
                 className="h-10 w-auto mr-2" 
               />
-              <span className="text-xl font-bold text-tykoo-darkBlue">TYKOO</span>
             </Link>
           </div>
           
