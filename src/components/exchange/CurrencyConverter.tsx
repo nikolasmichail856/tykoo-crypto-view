@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useCurrencyConverter } from "@/hooks/useCurrencyConverter";
 import CurrencyInput from "./converter/CurrencyInput";
 import SwapButton from "./converter/SwapButton";
+import { RefreshCcw } from "lucide-react";
+import { format } from "date-fns";
 
 const CurrencyConverter = () => {
   const {
@@ -18,7 +20,9 @@ const CurrencyConverter = () => {
     getFromOptions,
     getToOptions,
     convertCurrency,
-    handleSwapCurrencies
+    handleSwapCurrencies,
+    lastUpdated,
+    refreshRates
   } = useCurrencyConverter();
 
   return (
@@ -55,10 +59,29 @@ const CurrencyConverter = () => {
         </div>
       </div>
       
-      <div className="flex justify-center">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+        <div className="text-sm text-gray-600">
+          {lastUpdated ? (
+            <div className="flex items-center gap-2">
+              <span>Rates last updated: {format(lastUpdated, 'MMM d, yyyy HH:mm')}</span>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={() => refreshRates()} 
+                className="h-8 w-8"
+                disabled={isLoading}
+              >
+                <RefreshCcw className="h-4 w-4" />
+              </Button>
+            </div>
+          ) : (
+            <span>Loading exchange rates...</span>
+          )}
+        </div>
+        
         <Button 
           onClick={convertCurrency} 
-          className="bg-violet-600 hover:bg-violet-700 text-white px-10 py-6 text-lg rounded-xl shadow-md"
+          className="bg-violet-600 hover:bg-violet-700 text-white px-10 py-6 text-lg rounded-xl shadow-md w-full sm:w-auto"
           disabled={isLoading}
         >
           {isLoading ? "Converting..." : "Trade now"}
@@ -66,7 +89,7 @@ const CurrencyConverter = () => {
       </div>
 
       <div className="text-sm text-gray-600 text-center mt-8">
-        <p>Exchange rates are updated hourly. Real-world rates may vary.</p>
+        <p>Exchange rates are updated hourly from open.er-api.com. Crypto prices are simulated.</p>
       </div>
     </div>
   );

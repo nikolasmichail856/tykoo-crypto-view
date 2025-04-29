@@ -1,26 +1,41 @@
 
 import { useState, useEffect } from "react";
-
-// Mock exchange rates - in a real application, these would be fetched from an API
-const exchangeRates = {
-  USD: 1,
-  EUR: 0.88,   // 1 USD = 0.88 EUR or 1 EUR = 1.14 USD
-  BTC: 60000,  // 1 BTC = $60,000
-  ETH: 3000,   // 1 ETH = $3,000
-  USDC: 1      // 1 USDC = $1
-};
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "@/components/ui/sonner";
 
 export interface CurrencyOption {
   value: string;
   label: string;
 }
 
+const fetchExchangeRates = async () => {
+  try {
+    // Using the free currency API from ExchangeRate-API
+    const response = await fetch('https://open.er-api.com/v6/latest/USD');
+    if (!response.ok) {
+      throw new Error('Failed to fetch exchange rates');
+    }
+    const data = await response.json();
+    return data.rates;
+  } catch (error) {
+    console.error('Error fetching exchange rates:', error);
+    throw error;
+  }
+};
+
 export const useCurrencyConverter = () => {
   const [amount, setAmount] = useState<string>("1");
   const [fromCurrency, setFromCurrency] = useState<string>("EUR");
   const [toCurrency, setToCurrency] = useState<string>("USDC");
   const [convertedAmount, setConvertedAmount] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Query to fetch exchange rates
+  const { data: exchangeRates, isLoading, error, refetch } = useQuery({
+    queryKey: ['exchangeRates'],
+    queryFn: fetchExchangeRates,
+    staleTime: 1000 * 60 * 60, // 1 hour
+    retry: 3
+  });
 
   const cryptoOptions: CurrencyOption[] = [
     { value: "BTC", label: "BTC" },
@@ -45,34 +60,50 @@ export const useCurrencyConverter = () => {
       : [...cryptoOptions, ...fiatOptions.filter(opt => opt.value !== fromCurrency)];
   };
 
-  // Convert currencies
+  // This function will get updated exchange rates for crypto
+  const getCryptoRate = (currency: string) => {
+    // In a real application, you would fetch these from a crypto API
+    // These are placeholder rates based on USD
+    switch(currency) {
+      case "BTC": return 35000;
+      case "ETH": return 2300;
+      case "USDC": return 1;
+      default: return 1;
+    }
+  };
+
+  // Convert currencies using the fetched rates
   const convertCurrency = () => {
-    setIsLoading(true);
+    if (!exchangeRates) {
+      toast.error("Exchange rates not available yet");
+      return;
+    }
+
+    const numericAmount = parseFloat(amount) || 0;
     
-    // Simulate API call delay
-    setTimeout(() => {
-      const numericAmount = parseFloat(amount) || 0;
-      
-      // Convert to USD first as the base currency
-      const amountInUsd = fromCurrency === "USD" 
-        ? numericAmount 
-        : fromCurrency === "EUR"
-          ? numericAmount / exchangeRates.EUR
-          : numericAmount * (1 / exchangeRates[fromCurrency as keyof typeof exchangeRates]);
-      
-      // Then convert from USD to target currency
-      let result = 0;
-      if (toCurrency === "USD") {
-        result = amountInUsd;
-      } else if (toCurrency === "EUR") {
-        result = amountInUsd * exchangeRates.EUR;
-      } else {
-        result = amountInUsd / exchangeRates[toCurrency as keyof typeof exchangeRates];
-      }
-      
-      setConvertedAmount(result);
-      setIsLoading(false);
-    }, 500);
+    // Convert to USD first as the base currency
+    let amountInUsd;
+    if (fromCurrency === "USD") {
+      amountInUsd = numericAmount;
+    } else if (fromCurrency === "EUR") {
+      amountInUsd = numericAmount / exchangeRates.EUR;
+    } else {
+      // For crypto currencies
+      amountInUsd = numericAmount * getCryptoRate(fromCurrency);
+    }
+    
+    // Then convert from USD to target currency
+    let result = 0;
+    if (toCurrency === "USD") {
+      result = amountInUsd;
+    } else if (toCurrency === "EUR") {
+      result = amountInUsd * exchangeRates.EUR;
+    } else {
+      // For crypto currencies
+      result = amountInUsd / getCryptoRate(toCurrency);
+    }
+    
+    setConvertedAmount(result);
   };
 
   // Swap currencies
@@ -84,10 +115,10 @@ export const useCurrencyConverter = () => {
 
   // Initial conversion on mount
   useEffect(() => {
-    if (amount) {
+    if (exchangeRates && amount) {
       convertCurrency();
     }
-  }, []);
+  }, [exchangeRates]);
 
   return {
     amount,
@@ -101,6 +132,8 @@ export const useCurrencyConverter = () => {
     getFromOptions,
     getToOptions,
     convertCurrency,
-    handleSwapCurrencies
+    handleSwapCurrencies,
+    lastUpdated: exchangeRates ? new Date() : null,
+    refreshRates: refetch
   };
 };
