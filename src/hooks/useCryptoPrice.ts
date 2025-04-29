@@ -18,13 +18,50 @@ interface UseCryptoPriceReturn {
   formatDateByPeriod: (timestamp: string) => string;
 }
 
+// Helper function to generate mock price data when API fails
+const generateMockPriceData = (symbol: string, period: string): PriceData[] => {
+  const numDays = Number(period);
+  const dataPoints = numDays <= 1 ? 24 : numDays * 4; // More granular data for shorter periods
+  const result: PriceData[] = [];
+  
+  // Base price based on symbol
+  let basePrice = 100;
+  switch(symbol.toLowerCase()) {
+    case 'btc': basePrice = 40000; break;
+    case 'eth': basePrice = 2500; break;
+    case 'usdc': basePrice = 1; break;
+  }
+  
+  const now = new Date();
+  const msPerPoint = (numDays * 24 * 60 * 60 * 1000) / dataPoints;
+  
+  for (let i = 0; i < dataPoints; i++) {
+    // Generate timestamp for this data point
+    const pointTime = new Date(now.getTime() - (msPerPoint * (dataPoints - i)));
+    
+    // Add some random variation to price
+    const randomFactor = 0.98 + (Math.random() * 0.04); // ±2% variation
+    const price = basePrice * randomFactor;
+    
+    result.push({
+      timestamp: pointTime.toISOString(),
+      price: price
+    });
+  }
+  
+  return result;
+};
+
 export const useCryptoPrice = ({
   symbol,
   coinName,
   period,
   initialData,
 }: UseCryptoPriceProps): UseCryptoPriceReturn => {
-  const [data, setData] = useState<PriceData[]>(initialData);
+  // If we have initialData, use it; otherwise start with empty array
+  const [data, setData] = useState<PriceData[]>(
+    initialData && initialData.length > 0 ? initialData : []
+  );
   const [isUpdating, setIsUpdating] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
 
@@ -96,10 +133,19 @@ export const useCryptoPrice = ({
       }
     } catch (error) {
       console.error('Error fetching price data:', error);
+      
+      // Generate mock data as fallback when API fails
+      if (!data.length) {
+        console.log('Generating mock price data for', symbol);
+        const mockData = generateMockPriceData(symbol, period);
+        setData(mockData);
+        setLastUpdated(new Date());
+      }
+      
       toast({
-        title: "Couldn't update price data",
-        description: "We'll try again soon",
-        variant: "destructive"
+        title: "Using generated data",
+        description: "Couldn't connect to price API",
+        variant: "default"
       });
     } finally {
       setIsUpdating(false);
