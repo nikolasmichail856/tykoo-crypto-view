@@ -40,20 +40,20 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow p-4 h-full">
-      <div className="flex flex-col h-full">
+    <div className="bg-white rounded-xl shadow-md p-5 h-full">
+      <div className="flex flex-col h-full justify-between">
         <Input
           type="text"
           value={isLoading ? "..." : value}
           onChange={(e) => !readOnly && onChange(e.target.value)}
-          className="text-4xl font-bold border-0 focus:outline-none focus:ring-0 p-2"
+          className="text-3xl md:text-4xl font-bold border-0 focus:outline-none focus:ring-0 p-2 bg-transparent"
           placeholder="0"
           readOnly={readOnly || isLoading}
         />
         
-        <div className="mt-auto">
+        <div className="mt-4">
           <Select value={currency} onValueChange={setCurrency} disabled={isLoading}>
-            <SelectTrigger className="w-full border-0 justify-end">
+            <SelectTrigger className="w-full border-0 bg-transparent">
               <div className="flex items-center gap-2">
                 {getCurrencyIcon(currency)}
                 <SelectValue placeholder="Select currency" />

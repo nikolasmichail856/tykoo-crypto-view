@@ -15,13 +15,13 @@ const Exchange = () => {
       <main className="flex-grow">
         <ExchangeHero />
         
-        <div className="bg-lavender-50 py-16">
+        <div className="bg-lavender-50 py-20">
           <div className="container mx-auto px-4">
             <CurrencyConverter />
           </div>
         </div>
         
-        <div className="container mx-auto px-4 py-12">
+        <div className="container mx-auto px-4 py-16">
           <div className="mt-16">
             <SupportedCurrencies />
           </div>
