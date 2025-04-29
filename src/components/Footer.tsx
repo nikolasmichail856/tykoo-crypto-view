@@ -9,7 +9,7 @@ const Footer = () => {
           <div>
             <Link to="/" className="flex items-center mb-4">
               <img 
-                src="/lovable-uploads/719474fd-c011-4bc0-972c-07c2fac16782.png" 
+                src="/lovable-uploads/b1a0e805-4b94-4511-899a-89d150bed007.png" 
                 alt="TYKOO Logo" 
                 className="h-8 w-auto mr-2" 
               />
