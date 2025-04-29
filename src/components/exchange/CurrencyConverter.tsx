@@ -100,10 +100,6 @@ const CurrencyConverter = () => {
           {isLoading ? "Converting..." : "Trade now"}
         </Button>
       </div>
-
-      <div className="text-sm text-gray-600 text-center mt-8">
-        <p>Exchange rates from open.er-api.com. Cryptocurrency prices from CoinGecko API in real-time.</p>
-      </div>
     </div>
   );
 };
