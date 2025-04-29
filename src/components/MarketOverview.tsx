@@ -116,7 +116,11 @@ const MarketOverview = () => {
         )}
         
         <div className="text-center mt-10">
-          <Button variant="outline" className="border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue hover:text-white" asChild>
+          <Button 
+            variant="outline" 
+            className="border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue hover:text-white font-medium"
+            asChild
+          >
             <Link to="/markets">View All Markets</Link>
           </Button>
         </div>
