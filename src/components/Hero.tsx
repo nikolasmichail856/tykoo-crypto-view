@@ -18,7 +18,9 @@ const Hero = () => {
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
               <Button className="bg-tykoo-blue text-white hover:bg-tykoo-darkBlue text-lg px-8 py-6">
-                <Link to="/markets">Start Trading</Link>
+                <a href="https://app.tykoo.co/register" target="_blank" rel="noopener noreferrer" className="w-full inline-block">
+                  Start Trading
+                </a>
               </Button>
               <Button variant="outline" className="border-tykoo-blue text-tykoo-blue hover:bg-tykoo-blue hover:text-white text-lg px-8 py-6" asChild>
                 <Link to="/learn-more">
