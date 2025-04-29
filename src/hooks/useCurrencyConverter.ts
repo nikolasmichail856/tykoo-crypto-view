@@ -8,6 +8,11 @@ export interface CurrencyOption {
   label: string;
 }
 
+interface CryptoData {
+  id: string;
+  current_price: number;
+}
+
 const fetchExchangeRates = async () => {
   try {
     // Using the free currency API from ExchangeRate-API
@@ -23,6 +28,22 @@ const fetchExchangeRates = async () => {
   }
 };
 
+const fetchCryptoPrices = async () => {
+  try {
+    const response = await fetch(
+      'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,usd-coin&order=market_cap_desc&per_page=100&page=1'
+    );
+    if (!response.ok) {
+      throw new Error('Failed to fetch crypto prices');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching crypto prices:', error);
+    throw error;
+  }
+};
+
 export const useCurrencyConverter = () => {
   const [amount, setAmount] = useState<string>("1");
   const [fromCurrency, setFromCurrency] = useState<string>("EUR");
@@ -30,12 +51,22 @@ export const useCurrencyConverter = () => {
   const [convertedAmount, setConvertedAmount] = useState<number>(0);
 
   // Query to fetch exchange rates
-  const { data: exchangeRates, isLoading, error, refetch } = useQuery({
+  const { data: exchangeRates, isLoading: isLoadingRates, refetch: refetchRates } = useQuery({
     queryKey: ['exchangeRates'],
     queryFn: fetchExchangeRates,
     staleTime: 1000 * 60 * 60, // 1 hour
     retry: 3
   });
+
+  // Query to fetch crypto prices
+  const { data: cryptoData, isLoading: isLoadingCrypto, refetch: refetchCrypto } = useQuery({
+    queryKey: ['cryptoPrices'],
+    queryFn: fetchCryptoPrices,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: 3
+  });
+
+  const isLoading = isLoadingRates || isLoadingCrypto;
 
   const cryptoOptions: CurrencyOption[] = [
     { value: "BTC", label: "BTC" },
@@ -60,20 +91,30 @@ export const useCurrencyConverter = () => {
       : [...cryptoOptions, ...fiatOptions.filter(opt => opt.value !== fromCurrency)];
   };
 
-  // Get current crypto rates (simulated)
+  // Get real-time crypto rate from CoinGecko data
   const getCryptoRate = (currency: string) => {
-    // These are more realistic placeholder rates based on USD
+    if (!cryptoData) return 1;
+
     switch(currency) {
-      case "BTC": return 63500;  // Updated BTC price
-      case "ETH": return 3450;   // Updated ETH price
-      case "USDC": return 1;     // USDC is pegged to USD
+      case "BTC": {
+        const btcData = cryptoData.find((crypto: CryptoData) => crypto.id === 'bitcoin');
+        return btcData ? btcData.current_price : 60000; // Fallback if data not found
+      }
+      case "ETH": {
+        const ethData = cryptoData.find((crypto: CryptoData) => crypto.id === 'ethereum');
+        return ethData ? ethData.current_price : 3000; // Fallback if data not found
+      }
+      case "USDC": {
+        const usdcData = cryptoData.find((crypto: CryptoData) => crypto.id === 'usd-coin');
+        return usdcData ? usdcData.current_price : 1; // Fallback if data not found
+      }
       default: return 1;
     }
   };
 
   // Convert currencies using the fetched rates
   const convertCurrency = () => {
-    if (!exchangeRates) {
+    if (!exchangeRates || !cryptoData) {
       toast.error("Exchange rates not available yet");
       return;
     }
@@ -124,12 +165,18 @@ export const useCurrencyConverter = () => {
     setAmount(convertedAmount.toString());
   };
 
+  // Function to refresh rates
+  const refreshRates = () => {
+    refetchRates();
+    refetchCrypto();
+  };
+
   // Initial conversion on mount
   useEffect(() => {
-    if (exchangeRates && amount) {
+    if (exchangeRates && cryptoData && amount) {
       convertCurrency();
     }
-  }, [exchangeRates]);
+  }, [exchangeRates, cryptoData]);
 
   return {
     amount,
@@ -144,7 +191,7 @@ export const useCurrencyConverter = () => {
     getToOptions,
     convertCurrency,
     handleSwapCurrencies,
-    lastUpdated: exchangeRates ? new Date() : null,
-    refreshRates: refetch
+    lastUpdated: exchangeRates && cryptoData ? new Date() : null,
+    refreshRates
   };
 };
