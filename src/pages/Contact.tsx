@@ -148,7 +148,7 @@ const Contact = () => {
                       </svg>
                       <div>
                         <p className="font-medium">Email:</p>
-                        <p className="text-gray-600">contact@tykoo.com</p>
+                        <p className="text-gray-600">contact@tykoo.co</p>
                       </div>
                     </div>
                     
