@@ -54,7 +54,7 @@ const CoinChartCard: React.FC<CoinChartCardProps> = ({
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        <div className="mt-4 h-[500px]">
+        <div className="mt-4" style={{ height: '450px' }}>
           <PriceChart 
             data={selectedCrypto.price_history || []} 
             name={selectedCrypto.name} 
