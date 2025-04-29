@@ -60,14 +60,13 @@ export const useCurrencyConverter = () => {
       : [...cryptoOptions, ...fiatOptions.filter(opt => opt.value !== fromCurrency)];
   };
 
-  // This function will get updated exchange rates for crypto
+  // Get current crypto rates (simulated)
   const getCryptoRate = (currency: string) => {
-    // In a real application, you would fetch these from a crypto API
-    // These are placeholder rates based on USD
+    // These are more realistic placeholder rates based on USD
     switch(currency) {
-      case "BTC": return 35000;
-      case "ETH": return 2300;
-      case "USDC": return 1;
+      case "BTC": return 63500;  // Updated BTC price
+      case "ETH": return 3450;   // Updated ETH price
+      case "USDC": return 1;     // USDC is pegged to USD
       default: return 1;
     }
   };
@@ -81,26 +80,38 @@ export const useCurrencyConverter = () => {
 
     const numericAmount = parseFloat(amount) || 0;
     
-    // Convert to USD first as the base currency
+    // Step 1: Convert from source currency to USD as the common denominator
     let amountInUsd;
+    
     if (fromCurrency === "USD") {
       amountInUsd = numericAmount;
     } else if (fromCurrency === "EUR") {
+      // For EUR to USD, we divide by the EUR rate because rates are expressed as USD to X
       amountInUsd = numericAmount / exchangeRates.EUR;
-    } else {
-      // For crypto currencies
-      amountInUsd = numericAmount * getCryptoRate(fromCurrency);
+    } else if (cryptoOptions.some(opt => opt.value === fromCurrency)) {
+      // For crypto to USD conversion
+      if (fromCurrency === "USDC") {
+        amountInUsd = numericAmount; // USDC is 1:1 with USD
+      } else {
+        amountInUsd = numericAmount * getCryptoRate(fromCurrency);
+      }
     }
     
-    // Then convert from USD to target currency
+    // Step 2: Convert from USD to target currency
     let result = 0;
+    
     if (toCurrency === "USD") {
-      result = amountInUsd;
+      result = amountInUsd as number;
     } else if (toCurrency === "EUR") {
-      result = amountInUsd * exchangeRates.EUR;
-    } else {
-      // For crypto currencies
-      result = amountInUsd / getCryptoRate(toCurrency);
+      // For USD to EUR, we multiply by the EUR rate
+      result = (amountInUsd as number) * exchangeRates.EUR;
+    } else if (cryptoOptions.some(opt => opt.value === toCurrency)) {
+      // For USD to crypto conversion
+      if (toCurrency === "USDC") {
+        result = amountInUsd as number; // USDC is 1:1 with USD
+      } else {
+        result = (amountInUsd as number) / getCryptoRate(toCurrency);
+      }
     }
     
     setConvertedAmount(result);

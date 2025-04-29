@@ -1,11 +1,12 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useCurrencyConverter } from "@/hooks/useCurrencyConverter";
 import CurrencyInput from "./converter/CurrencyInput";
 import SwapButton from "./converter/SwapButton";
 import { RefreshCcw } from "lucide-react";
 import { format } from "date-fns";
+import { toast } from "@/components/ui/sonner";
 
 const CurrencyConverter = () => {
   const {
@@ -24,6 +25,18 @@ const CurrencyConverter = () => {
     lastUpdated,
     refreshRates
   } = useCurrencyConverter();
+
+  // Run conversion when any input values change
+  useEffect(() => {
+    if (amount && fromCurrency && toCurrency) {
+      convertCurrency();
+    }
+  }, [amount, fromCurrency, toCurrency]);
+
+  const handleRefresh = () => {
+    toast.info("Refreshing exchange rates...");
+    refreshRates();
+  };
 
   return (
     <div className="w-full max-w-4xl mx-auto bg-lavender-100 rounded-2xl p-8 shadow-lg">
@@ -67,7 +80,7 @@ const CurrencyConverter = () => {
               <Button 
                 variant="outline" 
                 size="icon" 
-                onClick={() => refreshRates()} 
+                onClick={handleRefresh} 
                 className="h-8 w-8"
                 disabled={isLoading}
               >
