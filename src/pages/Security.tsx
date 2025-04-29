@@ -178,38 +178,6 @@ const Security = () => {
         </div>
       </section>
 
-      {/* Security Compliance */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-tykoo-darkBlue mb-8 text-center">Industry Compliance & Certifications</h2>
-            
-            <div className="space-y-6">
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="font-bold text-xl mb-2">ISO 27001 Certified</h3>
-                <p className="text-gray-600">
-                  TYKOO maintains ISO 27001 certification, the international standard for information security management.
-                </p>
-              </div>
-              
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="font-bold text-xl mb-2">SOC 2 Type II Compliant</h3>
-                <p className="text-gray-600">
-                  Our platform undergoes regular SOC 2 Type II audits, verifying our controls for security, availability, and confidentiality.
-                </p>
-              </div>
-              
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="font-bold text-xl mb-2">Bug Bounty Program</h3>
-                <p className="text-gray-600">
-                  We collaborate with ethical hackers worldwide through our bug bounty program to identify and address potential security issues.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="py-16 bg-tykoo-blue text-white">
         <div className="container mx-auto px-4 text-center">
