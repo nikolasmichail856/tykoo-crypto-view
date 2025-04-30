@@ -108,22 +108,17 @@ const About = () => {
         </div>
       </section>
 
-      {/* Join Us CTA - Removed white space by extending gradient background */}
+      {/* Join Us CTA - Removed waitlist button */}
       <section className="bg-gradient-to-r from-tykoo-blue to-tykoo-darkBlue text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">Join Our Community</h2>
           <p className="text-xl max-w-3xl mx-auto mb-8">
             We're just getting started, and we'd love for you to be part of our journey. 
-            Join our early adopter community or explore opportunities to join our growing team.
+            Explore opportunities to join our growing team.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex justify-center">
             <Button size="lg" className="bg-white text-tykoo-blue hover:bg-gray-100" asChild>
               <Link to="/careers">Join Our Team</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-tykoo-blue" asChild>
-              <a href="https://app.tykoo.co/register" target="_blank" rel="noopener noreferrer">
-                Join the Waitlist
-              </a>
             </Button>
           </div>
         </div>
