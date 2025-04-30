@@ -31,37 +31,12 @@ export const useMarketData = (): UseMarketDataReturn => {
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoData | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
-  // Function to generate price history based on selected period
-  const fetchPriceHistory = async (coinId: string, days: string) => {
-    try {
-      const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=eur&days=${days}`);
-      
-      if (!response.ok) {
-        throw new Error(`Failed to fetch price history for ${coinId}`);
-      }
-      
-      const data = await response.json();
-      
-      if (data && data.prices) {
-        // Return the price history formatted as timestamp and price
-        return data.prices.map((item: [number, number]) => ({
-          timestamp: new Date(item[0]).toISOString(),
-          price: item[1]
-        }));
-      }
-      
-      return [];
-    } catch (error) {
-      console.error(`Error fetching price history for ${coinId}:`, error);
-      return [];
-    }
-  };
-
-  // Fetch real cryptocurrency data from CoinGecko
+  // Function to fetch cryptocurrency data
   const fetchCryptoData = async () => {
     setIsLoading(true);
     
     try {
+      // Define the supported coins
       const coinIds = 'bitcoin,ethereum,usd-coin';
       const response = await fetch(
         `https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&ids=${coinIds}&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h`
@@ -73,30 +48,24 @@ export const useMarketData = (): UseMarketDataReturn => {
       
       const coinsData = await response.json();
       
-      const formattedData: CryptoData[] = await Promise.all(
-        coinsData.map(async (coin: any) => {
-          // Fetch price history for each coin
-          const priceHistory = await fetchPriceHistory(coin.id, selectedPeriod);
-          
-          return {
-            id: coin.id,
-            name: coin.name,
-            symbol: coin.symbol.toUpperCase(),
-            current_price: coin.current_price,
-            price_change_percentage_24h: coin.price_change_percentage_24h || 0,
-            market_cap: coin.market_cap,
-            total_volume: coin.total_volume,
-            image: coin.image,
-            description: coin.id === 'bitcoin' ? 'Bitcoin is the first decentralized cryptocurrency. Bitcoin uses peer-to-peer technology to operate with no central authority.' :
-                         coin.id === 'ethereum' ? 'Ethereum is a decentralized, open-source blockchain with smart contract functionality.' :
-                         coin.id === 'usd-coin' ? 'USD Coin is a stablecoin that is pegged to the US dollar on a 1:1 basis.' : '',
-            high_24h: coin.high_24h || 0,
-            low_24h: coin.low_24h || 0,
-            circulating_supply: coin.circulating_supply,
-            price_history: priceHistory
-          };
-        })
-      );
+      // Transform the data to match our CryptoData type
+      const formattedData: CryptoData[] = coinsData.map((coin: any) => ({
+        id: coin.id,
+        name: coin.name,
+        symbol: coin.symbol.toUpperCase(),
+        current_price: coin.current_price,
+        price_change_percentage_24h: coin.price_change_percentage_24h || 0,
+        market_cap: coin.market_cap,
+        total_volume: coin.total_volume,
+        image: coin.image,
+        description: coin.id === 'bitcoin' ? 'Bitcoin is the first decentralized cryptocurrency. Bitcoin uses peer-to-peer technology to operate with no central authority.' :
+                     coin.id === 'ethereum' ? 'Ethereum is a decentralized, open-source blockchain with smart contract functionality.' :
+                     coin.id === 'usd-coin' ? 'USD Coin is a stablecoin that is pegged to the US dollar on a 1:1 basis.' : '',
+        high_24h: coin.high_24h || 0,
+        low_24h: coin.low_24h || 0,
+        circulating_supply: coin.circulating_supply || 0,
+        price_history: [] // We'll handle this separately as needed
+      }));
       
       setCryptoData(formattedData);
       
@@ -112,10 +81,11 @@ export const useMarketData = (): UseMarketDataReturn => {
       }
       
       setLastUpdated(new Date());
+      toast.success("Market data updated successfully");
       
     } catch (error) {
       console.error('Error fetching cryptocurrency data:', error);
-      toast.error("Couldn't fetch market data. Using cached data instead.");
+      toast.error("Couldn't fetch real-time market data. Using cached data instead.");
       
       // If fetch fails, use mock data as fallback
       const mockData = generateMockData();
@@ -133,20 +103,13 @@ export const useMarketData = (): UseMarketDataReturn => {
   useEffect(() => {
     fetchCryptoData();
     
-    // Set up interval for periodic refresh (every 2 minutes)
+    // Set up interval for periodic refresh (every 60 seconds)
     const refreshInterval = setInterval(() => {
       fetchCryptoData();
-    }, 120000); // 2 minutes
+    }, 60000);
     
     return () => clearInterval(refreshInterval);
   }, []);
-  
-  // Refetch data when period changes
-  useEffect(() => {
-    if (cryptoData.length > 0) {
-      fetchCryptoData();
-    }
-  }, [selectedPeriod]);
 
   return {
     cryptoData,

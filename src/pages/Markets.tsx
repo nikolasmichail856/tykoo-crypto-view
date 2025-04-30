@@ -12,16 +12,15 @@ const Markets: React.FC = () => {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   const handleDataRefresh = () => {
-    // This is a placeholder - the actual refresh happens in MarketDataProvider
     setLastUpdated(new Date());
     toast.success("Market data is being updated");
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
       
-      <div className="py-10 bg-white flex-grow">
+      <div className="py-10 flex-grow">
         <div className="container mx-auto px-4">
           <MarketHeader 
             title="Live Market Prices" 

@@ -1,20 +1,13 @@
+
 import React from 'react';
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { TrendingUp, TrendingDown } from 'lucide-react';
 import { type CryptoData } from './MarketDataProvider';
 import { formatCurrency, formatLargeNumber } from '@/utils/formatters';
-import { TrendingUp, TrendingDown } from 'lucide-react';
+import CoinChartCard from './CoinChartCard';
 
 interface MarketContentProps {
   searchTerm: string;
@@ -42,7 +35,7 @@ const MarketContent: React.FC<MarketContentProps> = ({
   handleCryptoSelect
 }) => {
   return (
-    <>
+    <div className="flex flex-col space-y-6">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
         <Input
           type="text"
@@ -65,63 +58,106 @@ const MarketContent: React.FC<MarketContentProps> = ({
         </Select>
       </div>
 
-      <div className="border rounded-md">
-        <ScrollArea>
-          <Table>
-            <TableCaption>A list of your favorite cryptocurrencies.</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[50px]">Rank</TableHead>
-                <TableHead className="text-left">
-                  Name
-                </TableHead>
-                <TableHead className="text-right cursor-pointer" onClick={() => handleSort('current_price')}>
+      {selectedCrypto && (
+        <div className="mb-6">
+          <CoinChartCard
+            selectedCrypto={selectedCrypto}
+            formatCurrency={formatCurrency}
+            period={selectedPeriod}
+          />
+        </div>
+      )}
+
+      <div className="rounded-lg border overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead className="bg-gray-50 border-b">
+              <tr>
+                <th className="px-4 py-3 font-medium text-gray-600">Rank</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Name</th>
+                <th 
+                  className="px-4 py-3 font-medium text-gray-600 cursor-pointer hover:text-tykoo-blue"
+                  onClick={() => handleSort('current_price')}
+                >
                   Price
                   {activeSortField === 'current_price' && (
                     <span>{sortDirection === 'asc' ? ' ▲' : ' ▼'}</span>
                   )}
-                </TableHead>
-                <TableHead className="text-right cursor-pointer" onClick={() => handleSort('price_change_percentage_24h')}>
+                </th>
+                <th 
+                  className="px-4 py-3 font-medium text-gray-600 cursor-pointer hover:text-tykoo-blue"
+                  onClick={() => handleSort('price_change_percentage_24h')}
+                >
                   24h Change
                   {activeSortField === 'price_change_percentage_24h' && (
                     <span>{sortDirection === 'asc' ? ' ▲' : ' ▼'}</span>
                   )}
-                </TableHead>
-                <TableHead className="text-right cursor-pointer" onClick={() => handleSort('market_cap')}>
+                </th>
+                <th 
+                  className="px-4 py-3 font-medium text-gray-600 cursor-pointer hover:text-tykoo-blue"
+                  onClick={() => handleSort('market_cap')}
+                >
                   Market Cap
                   {activeSortField === 'market_cap' && (
                     <span>{sortDirection === 'asc' ? ' ▲' : ' ▼'}</span>
                   )}
-                </TableHead>
-                <TableHead className="text-right">Volume (24h)</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {sortedData.map((crypto, index) => (
-                <TableRow key={crypto.id} className="cursor-pointer hover:bg-gray-100" onClick={() => handleCryptoSelect(crypto)}>
-                  <TableCell className="font-medium">{index + 1}</TableCell>
-                  <TableCell className="flex items-center gap-2">
-                    <img src={crypto.image} alt={crypto.name} className="w-6 h-6 rounded-full" />
-                    {crypto.name} ({crypto.symbol})
-                  </TableCell>
-                  <TableCell className="text-right">{formatCurrency(crypto.current_price)}</TableCell>
-                  <TableCell className={`text-right ${crypto.price_change_percentage_24h >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                    {crypto.price_change_percentage_24h >= 0 ? (
-                      <TrendingUp className="inline-block h-4 w-4 mr-1 align-middle" />
-                    ) : (
-                      <TrendingDown className="inline-block h-4 w-4 mr-1 align-middle" />
-                    )}
-                    {crypto.price_change_percentage_24h.toFixed(2)}%
-                  </TableCell>
-                  <TableCell className="text-right">{formatLargeNumber(crypto.market_cap)}</TableCell>
-                  <TableCell className="text-right">{formatLargeNumber(crypto.total_volume)}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </ScrollArea>
+                </th>
+                <th className="px-4 py-3 font-medium text-gray-600">Volume (24h)</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedData.length > 0 ? (
+                sortedData.map((crypto, index) => (
+                  <tr 
+                    key={crypto.id} 
+                    className={`border-b hover:bg-gray-50 cursor-pointer ${selectedCrypto?.id === crypto.id ? 'bg-gray-50' : ''}`}
+                    onClick={() => handleCryptoSelect(crypto)}
+                  >
+                    <td className="px-4 py-3">{index + 1}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <img src={crypto.image} alt={crypto.name} className="w-6 h-6 rounded-full" />
+                        <div>
+                          <span className="font-medium">{crypto.name}</span>
+                          <span className="text-gray-500 text-sm ml-2">({crypto.symbol.toUpperCase()})</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 font-medium">{formatCurrency(crypto.current_price)}</td>
+                    <td className={`px-4 py-3 ${crypto.price_change_percentage_24h >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                      <div className="flex items-center">
+                        {crypto.price_change_percentage_24h >= 0 ? (
+                          <TrendingUp className="inline-block h-4 w-4 mr-1" />
+                        ) : (
+                          <TrendingDown className="inline-block h-4 w-4 mr-1" />
+                        )}
+                        <span>{crypto.price_change_percentage_24h.toFixed(2)}%</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">{formatLargeNumber(crypto.market_cap)}</td>
+                    <td className="px-4 py-3">{formatLargeNumber(crypto.total_volume)}</td>
+                    <td className="px-4 py-3">
+                      <Button size="sm" className="bg-tykoo-blue hover:bg-blue-600">Trade</Button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={7} className="px-4 py-6 text-center text-gray-500">
+                    No cryptocurrencies found matching your search.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </>
+
+      <div className="mt-4 text-center text-sm text-gray-500">
+        <p>A list of your favorite cryptocurrencies. Updated in real-time.</p>
+      </div>
+    </div>
   );
 };
 

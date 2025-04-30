@@ -58,3 +58,14 @@ export const formatDateForPeriod = (timestamp: string, period: string) => {
     return `${date.getMonth() + 1}/${date.getDate()}`;
   }
 };
+
+// Format date to display like "30 Apr 2025, 13:45"
+export const formatDateTime = (date: Date) => {
+  return new Intl.DateTimeFormat('en-EU', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric', 
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(date);
+};
