@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useCryptoPrices } from '@/hooks/useCryptoPrices';
 import { formatCurrency, formatLargeNumber } from '@/utils/formatters';
+import CurrencyIcon from '@/components/exchange/converter/CurrencyIcon';
+import CryptoIconRenderer from '@/components/markets/CryptoIconRenderer';
 
 interface CryptoData {
   id: string;
@@ -42,7 +44,7 @@ const MarketOverview = () => {
           crypto.id === 'bitcoin' ? '1' : 
           crypto.id === 'ethereum' ? '279' : 
           crypto.id === 'usd-coin' ? '6319' : '1'
-        }/large/${crypto.id.replace('-coin', '')}.png`,
+        }/large/${crypto.id === 'usd-coin' ? 'usdc' : crypto.id}.png`,
       }));
       
       setCryptoData(formattedData);
@@ -85,14 +87,19 @@ const MarketOverview = () => {
               <Card key={crypto.id} className="hover:shadow-lg transition-shadow cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex items-center mb-4">
-                    <img 
-                      src={crypto.image} 
-                      alt={crypto.name} 
-                      className="w-10 h-10 mr-3" 
-                    />
+                    {crypto.symbol === 'USDC' ? (
+                      <div className="w-10 h-10 mr-3 flex items-center justify-center">
+                        <CurrencyIcon currencyCode={crypto.symbol} className="h-10 w-10" />
+                      </div>
+                    ) : (
+                      <CryptoIconRenderer 
+                        symbol={crypto.symbol} 
+                        image={crypto.image} 
+                      />
+                    )}
                     <div>
                       <h3 className="font-semibold">{crypto.name}</h3>
-                      <p className="text-sm text-gray-500">{crypto.symbol.toUpperCase()}</p>
+                      <p className="text-sm text-gray-500">{crypto.symbol}</p>
                     </div>
                   </div>
                   <div className="flex justify-between items-end">
