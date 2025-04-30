@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
-import { Globe, Shield, Users, Award, Star } from 'lucide-react';
+import { Globe, Shield, Users, Rocket, Star } from 'lucide-react';
 
 const About = () => {
   return (
@@ -16,7 +16,7 @@ const About = () => {
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">About TYKOO</h1>
           <p className="text-xl max-w-3xl mx-auto">
-            Building the future of digital finance through secure, accessible cryptocurrency solutions since 2018.
+            Building accessible cryptocurrency solutions for everyone, one step at a time.
           </p>
         </div>
       </section>
@@ -28,18 +28,18 @@ const About = () => {
             <div className="flex-1">
               <h2 className="text-3xl font-bold text-tykoo-darkBlue mb-6">Our Story</h2>
               <p className="text-gray-700 mb-6">
-                Founded in 2018, TYKOO began as a small team of blockchain enthusiasts with a big vision: 
-                to make cryptocurrency accessible to everyone. What started in a small office in Łódź, Poland 
-                has grown into a trusted platform serving clients across Europe.
+                Founded in 2022, TYKOO began as a small team of three friends with a shared vision: 
+                to simplify cryptocurrency for everyday users. What started in a co-working space in Łódź, Poland 
+                has grown into an exciting startup ready to make its mark on the European crypto scene.
               </p>
               <p className="text-gray-700 mb-6">
-                Through market volatility and regulatory changes, we've remained committed to our core 
-                principles of security, transparency, and user-focused design. Today, TYKOO processes 
-                over €75 million in monthly trading volume with over 350,000 registered users.
+                We believe that cryptocurrency shouldn't be complicated. Our founding team combines expertise in 
+                blockchain technology, user experience design, and financial compliance to create solutions that 
+                bridge the gap between traditional finance and digital assets.
               </p>
               <p className="text-gray-700">
-                Our mission continues: to create a secure, transparent, and user-friendly platform that 
-                bridges the gap between traditional finance and the crypto economy of tomorrow.
+                Today, we're building our platform with a focus on security, transparency, and user-friendliness 
+                while connecting with early adopters who share our vision for the future of finance.
               </p>
             </div>
             <div className="flex-1 flex justify-center">
@@ -56,14 +56,14 @@ const About = () => {
       {/* Key Metrics */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-tykoo-darkBlue mb-10 text-center">Our Impact</h2>
+          <h2 className="text-3xl font-bold text-tykoo-darkBlue mb-10 text-center">Our Progress</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { figure: "€75M+", label: "Monthly Trading Volume", icon: <Globe className="h-8 w-8 text-tykoo-blue mb-3" /> },
-              { figure: "350,000+", label: "Registered Users", icon: <Users className="h-8 w-8 text-tykoo-blue mb-3" /> },
-              { figure: "24/7", label: "Customer Support", icon: <Shield className="h-8 w-8 text-tykoo-blue mb-3" /> },
-              { figure: "20+", label: "Cryptocurrencies Supported", icon: <Award className="h-8 w-8 text-tykoo-blue mb-3" /> }
+              { figure: "€250K+", label: "Seed Funding Secured", icon: <Rocket className="h-8 w-8 text-tykoo-blue mb-3" /> },
+              { figure: "1,200+", label: "Beta Users", icon: <Users className="h-8 w-8 text-tykoo-blue mb-3" /> },
+              { figure: "8", label: "Team Members", icon: <Shield className="h-8 w-8 text-tykoo-blue mb-3" /> },
+              { figure: "5+", label: "Cryptocurrencies Supported", icon: <Globe className="h-8 w-8 text-tykoo-blue mb-3" /> }
             ].map((stat, idx) => (
               <Card key={idx} className="text-center p-6 hover:shadow-lg transition-shadow">
                 <CardContent className="pt-6">
@@ -86,15 +86,15 @@ const About = () => {
             {[
               {
                 title: "Security",
-                description: "We implement the highest standards of security to protect our users' assets and data. Our multi-layered security infrastructure includes cold storage for 95% of assets, regular security audits, and advanced encryption protocols."
+                description: "We're building with security as our foundation. Even as a startup, we implement industry best practices for the protection of user assets and data, working with security experts to ensure our platform is built to the highest standards."
               },
               {
                 title: "Transparency",
-                description: "We believe in complete transparency in all our operations and communications. We provide real-time trading data, clear fee structures, and regular updates about our operations and regulatory compliance."
+                description: "We believe in open communication with our community. We share our development progress, clearly explain how our platform works, and maintain honest dialogue with users about both our achievements and challenges."
               },
               {
                 title: "Accessibility",
-                description: "We're committed to making cryptocurrency accessible to everyone, regardless of background. Our platform is designed to be intuitive for beginners while offering advanced features for experienced traders."
+                description: "Cryptocurrency doesn't need to be complicated. We're designing our platform with intuitive interfaces and clear guidance so that anyone, regardless of their technical background, can confidently participate in the digital economy."
               }
             ].map((value, idx) => (
               <Card key={idx} className="p-6 hover:shadow-lg transition-shadow h-full">
@@ -111,26 +111,26 @@ const About = () => {
       {/* Leadership Team */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-tykoo-darkBlue mb-10 text-center">Our Leadership Team</h2>
+          <h2 className="text-3xl font-bold text-tykoo-darkBlue mb-10 text-center">Our Team</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
                 name: "Aleksander Nowak",
-                title: "Chief Executive Officer",
-                bio: "Former fintech executive with 15+ years of experience in digital banking and blockchain technologies.",
+                title: "Co-Founder & CEO",
+                bio: "Former software developer with a passion for blockchain technology. Alex left his corporate job to build TYKOO after experiencing firsthand the barriers to crypto adoption.",
                 image: "https://source.unsplash.com/random/300x300/?portrait&man"
               },
               {
                 name: "Marta Kowalska",
-                title: "Chief Technology Officer",
-                bio: "Blockchain developer and security expert with previous experience at major European tech companies.",
+                title: "Co-Founder & CTO",
+                bio: "Blockchain developer with experience building distributed systems. Marta leads our technical development with a focus on security and scalability.",
                 image: "https://source.unsplash.com/random/300x300/?portrait&woman"
               },
               {
                 name: "Tomasz Wójcik",
-                title: "Chief Financial Officer",
-                bio: "Certified financial analyst with extensive experience in regulatory compliance and financial operations.",
+                title: "Co-Founder & COO",
+                bio: "Background in fintech startups and compliance. Tomasz ensures our operations run smoothly while navigating the evolving regulatory landscape.",
                 image: "https://source.unsplash.com/random/300x300/?portrait&man&2"
               }
             ].map((person, idx) => (
@@ -153,40 +153,40 @@ const About = () => {
         </div>
       </section>
 
-      {/* Achievements */}
+      {/* Milestones */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-tykoo-darkBlue mb-10 text-center">Achievements & Recognition</h2>
+          <h2 className="text-3xl font-bold text-tykoo-darkBlue mb-10 text-center">Our Journey So Far</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[
               {
                 year: "2023",
-                achievement: "Named 'Most Secure Cryptocurrency Exchange' by European Fintech Awards",
+                achievement: "Successfully completed our seed funding round",
                 icon: <Star className="h-8 w-8 text-yellow-500" />
               },
               {
+                year: "2023",
+                achievement: "Launched private beta with 500 users",
+                icon: <Rocket className="h-8 w-8 text-blue-500" />
+              },
+              {
                 year: "2022",
-                achievement: "Received Polish Financial Technology Innovation Award",
-                icon: <Award className="h-8 w-8 text-blue-500" />
+                achievement: "Expanded team to 8 members across development and operations",
+                icon: <Users className="h-8 w-8 text-green-500" />
               },
               {
-                year: "2021",
-                achievement: "Expanded services to 12 European countries",
-                icon: <Globe className="h-8 w-8 text-green-500" />
-              },
-              {
-                year: "2020",
-                achievement: "Reached 100,000 user milestone",
-                icon: <Users className="h-8 w-8 text-purple-500" />
+                year: "2022",
+                achievement: "Founded TYKOO with our core team in Łódź, Poland",
+                icon: <Star className="h-8 w-8 text-purple-500" />
               }
-            ].map((achievement, idx) => (
+            ].map((milestone, idx) => (
               <Card key={idx} className="p-6 hover:shadow-lg transition-shadow">
                 <CardContent className="pt-6 flex items-start">
-                  <div className="mr-4 mt-1">{achievement.icon}</div>
+                  <div className="mr-4 mt-1">{milestone.icon}</div>
                   <div>
-                    <h3 className="font-bold text-xl mb-2 text-tykoo-darkBlue">{achievement.year}</h3>
-                    <p className="text-gray-700">{achievement.achievement}</p>
+                    <h3 className="font-bold text-xl mb-2 text-tykoo-darkBlue">{milestone.year}</h3>
+                    <p className="text-gray-700">{milestone.achievement}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -198,10 +198,10 @@ const About = () => {
       {/* Join Us CTA */}
       <section className="py-16 bg-gradient-to-r from-tykoo-blue to-tykoo-darkBlue text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">Join Us on Our Journey</h2>
+          <h2 className="text-3xl font-bold mb-6">Join Our Community</h2>
           <p className="text-xl max-w-3xl mx-auto mb-8">
-            Be part of the financial revolution and help us build a more inclusive, 
-            accessible future for digital finance in Europe and beyond.
+            We're just getting started, and we'd love for you to be part of our journey. 
+            Join our early adopter community or explore opportunities to join our growing team.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-white text-tykoo-blue hover:bg-gray-100" asChild>
@@ -209,7 +209,7 @@ const About = () => {
             </Button>
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-tykoo-blue" asChild>
               <a href="https://app.tykoo.co/register" target="_blank" rel="noopener noreferrer">
-                Create an Account
+                Join the Waitlist
               </a>
             </Button>
           </div>
