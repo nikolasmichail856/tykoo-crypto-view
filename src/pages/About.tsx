@@ -108,8 +108,8 @@ const About = () => {
         </div>
       </section>
 
-      {/* Join Us CTA */}
-      <section className="py-16 bg-gradient-to-r from-tykoo-blue to-tykoo-darkBlue text-white">
+      {/* Join Us CTA - Removed white space by extending gradient background */}
+      <section className="bg-gradient-to-r from-tykoo-blue to-tykoo-darkBlue text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">Join Our Community</h2>
           <p className="text-xl max-w-3xl mx-auto mb-8">
