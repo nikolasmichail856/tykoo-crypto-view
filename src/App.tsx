@@ -9,7 +9,7 @@ import Markets from "./pages/Markets";
 import Support from "./pages/Support";
 import FAQ from "./pages/FAQ";
 import LearnMore from "./pages/LearnMore";
-import About from "./pages/About";
+
 import Careers from "./pages/Careers";
 import Security from "./pages/Security";
 import Exchange from "./pages/Exchange";
@@ -33,7 +33,7 @@ const App = () => (
           <Route path="/support" element={<Support />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/learn-more" element={<LearnMore />} />
-          <Route path="/about" element={<About />} />
+          
           <Route path="/careers" element={<Careers />} />
           <Route path="/security" element={<Security />} />
           <Route path="/exchange" element={<Exchange />} />
